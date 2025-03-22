@@ -1,5 +1,8 @@
 const { z } = require("zod");
 
+// Reference: 
+// https://github.com/colinhacks/zod
+// https://zod.dev/
 const createEmployeeSchema = z.object({
   name: z.string().min(10).max(50),
   email_address: z.string().email("Not a valid email"),
