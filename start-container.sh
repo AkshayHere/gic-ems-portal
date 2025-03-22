@@ -10,11 +10,14 @@ fi
 #     echo "Removing node_modules."
 #     rm -r server/node_modules/
 # fi
+
 # set the STRING variable
 # STRING="Hello World!"
 # print the contents of the variable on screen
 echo "Building container..."
 # docker compose -f docker-compose.yml up -d --build
+echo docker compose -f docker-compose.yml down
+
 echo "Current variable is $1"
 if [[ $1 == "new" ]]; then
     echo "Prompt to build new container."        

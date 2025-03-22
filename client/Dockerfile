@@ -7,7 +7,10 @@ COPY public/ /client/public
 COPY src/ /client/src
 COPY index.html /client/
 COPY package.json /client/
+COPY .env.example /client/.env
 COPY vite.config.js /client/
-RUN npm install --force --loglevel verbose
-# RUN npm install
+
+# RUN npm install --force --loglevel verbose
+RUN npm install
+# RUN npm update --force 
 RUN npm run build
