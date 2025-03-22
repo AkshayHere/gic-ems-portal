@@ -27,19 +27,25 @@ enum Gender {
 }
 
 model Employee {
-  id            String @id @default(uuid()) @db.Uuid
-  name          String @db.VarChar(100)
-  email_address String @db.VarChar(100)
+  id            String    @id @default(uuid()) @db.Uuid
+  name          String    @db.VarChar(100)
+  email_address String    @db.VarChar(100)
   gender        Gender
-  phone_number  String @db.VarChar(100)
-  @@map("employee")
+  phone_number  String    @db.VarChar(100)
+  created_at    DateTime?
+  cafe_id       String?   @db.Uuid // Ensures no employee is linked to more than one cafe
+  cafe          Cafe?     @relation(fields: [cafe_id], references: [id])
+
+  @@map("employees")
 }
 
 model Cafe {
-  id          String @id @default(uuid()) @db.Uuid
-  name        String @db.VarChar(50)
-  description String @db.VarChar(255)
-  location    String @db.VarChar(100)
-  logo        String @db.VarChar(100)
-  @@map("cafe")
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String     @db.VarChar(50)
+  description String     @db.VarChar(255)
+  location    String     @db.VarChar(100)
+  logo        String     @db.VarChar(100)
+  employees   Employee[] // A cafe can have many employees
+
+  @@map("cafes")
 }

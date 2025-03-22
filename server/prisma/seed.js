@@ -1,7 +1,49 @@
 const { PrismaClient } = require("@prisma/client");
+const { faker } = require("@faker-js/faker");
 const prisma = new PrismaClient();
+const SAMPLE_NUMBER = 10;
+
+// Create a fake employee list
+// Reference: https://blog.alexrusin.com/prisma-seeding-quickly-populate-your-database-for-development/
+function createEmployeeList(cafes) {
+  const users = [];
+  for (let i = 0; i < SAMPLE_NUMBER; i++) {
+    const cafeId = faker.number.int({ min: 1, max: 9 });
+    const cafeDetails = cafes[cafeId];
+    const created_at = faker.date.between({
+      from: "2024-01-01",
+      to: Date.now(),
+    });
+
+    users.push({
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+      email_address: faker.internet.email(),
+      gender: faker.number.binary() == 1 ? "MALE" : "FEMALE",
+      created_at,
+      phone_number: faker.phone.number({ style: "international" }),
+      cafe_id: cafeDetails.id,
+    });
+  }
+  return users;
+}
+
+function createCafeList() {
+  const cafes = [];
+  for (let i = 0; i < SAMPLE_NUMBER; i++) {
+    cafes.push({
+      id: faker.string.uuid(),
+      name: faker.company.name(),
+      description: faker.lorem.sentence(),
+      location: faker.location.city(),
+      logo: faker.image.url(),
+    });
+  }
+  return cafes;
+}
 
 async function main() {
+  const cafes = createCafeList();
   await prisma.user.createMany({
     data: [
       {
@@ -407,23 +449,12 @@ async function main() {
     ],
   });
 
+  await prisma.cafe.createMany({
+    data: cafes,
+  });
+
   await prisma.employee.createMany({
-    data: [
-      {
-        id: "22e5d77c-a295-4d9c-8a66-8d0db5b05a0c",
-        name: "Maripossa Piper",
-        email_address: "mkingscote0@shareasale.com",
-        gender: "FEMALE",
-        phone_number: "245-179-4884",
-      },
-      {
-        id: "fb4d0749-b494-44c0-9639-d18764002757",
-        name: "Alleycat Bull",
-        email_address: "alleycat@bs.com",
-        gender: "MALE",
-        phone_number: "245-179-1001",
-      },
-    ],
+    data: createEmployeeList(cafes),
   });
 }
 
