@@ -6,17 +6,17 @@ if [ -d docker_test_db/ ]; then
 fi
 
 # We should remove the node_modules folder if it exists
-# if [ -d server/node_modules/ ]; then
-#     echo "Removing node_modules."
-#     rm -r server/node_modules/
-# fi
+if [ -d server/node_modules/ ]; then
+    echo "Removing node_modules."
+    rm -r server/node_modules/
+fi
 
 # set the STRING variable
 # STRING="Hello World!"
 # print the contents of the variable on screen
 echo "Building container..."
 # docker compose -f docker-compose.yml up -d --build
-echo docker compose -f docker-compose.yml down
+echo docker compose -f docker-compose.yml down -v
 
 echo "Current variable is $1"
 if [[ $1 == "new" ]]; then

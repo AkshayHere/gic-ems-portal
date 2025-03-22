@@ -5,10 +5,10 @@ RUN apk update && apk add bash
 WORKDIR /client
 COPY public/ /client/public
 COPY src/ /client/src
-COPY index.html /client/
-COPY package.json /client/
+COPY index.html /client
+COPY package.json /client
 COPY .env.example /client/.env
-COPY vite.config.js /client/
+COPY vite.config.js /client
 
 # RUN npm install --force --loglevel verbose
 RUN npm install
