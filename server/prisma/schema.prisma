@@ -24,5 +24,22 @@ model User {
 enum Gender {
   MALE
   FEMALE
-  OTHER
+}
+
+model Employee {
+  id            String @id @default(uuid()) @db.Uuid
+  name          String @db.VarChar(100)
+  email_address String @db.VarChar(100)
+  gender        Gender
+  phone_number  String @db.VarChar(100)
+  @@map("employee")
+}
+
+model Cafe {
+  id          String @id @default(uuid()) @db.Uuid
+  name        String @db.VarChar(50)
+  description String @db.VarChar(255)
+  location    String @db.VarChar(100)
+  logo        String @db.VarChar(100)
+  @@map("cafe")
 }

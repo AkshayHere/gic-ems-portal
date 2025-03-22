@@ -3,10 +3,14 @@ FROM node:alpine
 RUN apk update && apk upgrade && apk add bash
 # https://dev.to/pulimoodan/prisma-could-not-parse-schema-engine-response-4502
 RUN apk add --no-cache openssl
+
 WORKDIR /server
 COPY src/ /server/src
 COPY prisma/ /server/prisma
 COPY package.json /server
-# RUN npm install
-RUN npm install --force --loglevel verbose
+COPY .env.example /server/.env 
+RUN npm install
+# RUN npm install --force --loglevel verbose
 RUN npx prisma generate
+# RUN npx prisma migrate dev --create-only
+# RUN npx prisma db push

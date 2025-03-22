@@ -5,7 +5,10 @@
 
 */
 -- DropTable
-DROP TABLE "User";
+-- DROP TABLE "User";
+
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('MALE', 'FEMALE');
 
 -- CreateTable
 CREATE TABLE "user" (

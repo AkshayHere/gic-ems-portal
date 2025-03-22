@@ -5,7 +5,7 @@
 
 */
 -- CreateEnum
-CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
+CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE');
 
 -- AlterTable
 ALTER TABLE "user" DROP COLUMN "gender",

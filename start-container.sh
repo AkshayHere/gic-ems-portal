@@ -8,5 +8,14 @@ fi
 # STRING="Hello World!"
 # print the contents of the variable on screen
 echo "Building container..."
-docker compose -f docker-compose.yml up -d
+# docker compose -f docker-compose.yml up -d --build
+echo "Current variable is $1"
+if [[ $1 == "new" ]]; then
+    echo "Prompt to build new container."
+    docker compose -f docker-compose.yml up -d --build
+else
+    echo "Prompt to resync container." 
+    docker compose -f docker-compose.yml up -d
+fi
+
 echo "Container built."
