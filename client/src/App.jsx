@@ -1,18 +1,26 @@
 import "./App.css";
-import 'antd/dist/reset.css';
+import "antd/dist/reset.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import UserDetail from "./pages/UserDetail";
+import ListEmployees from "./pages/Employee/List";
+import React from "react";
+import NavBar from "./components/common/navbar";
+import ListCafes from "./pages/Cafe/List";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/home" element={<Navigate to={"/"} />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/user/:id" element={<UserDetail />} />
-      </Routes>
-    </BrowserRouter>
+    <React.Fragment>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<NavBar />}>
+            <Route path="/home" element={<Navigate to={"/"} />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/employees" element={<ListEmployees />} />
+            <Route path="/cafes" element={<ListCafes />} /> 
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </React.Fragment>
   );
 }
 
