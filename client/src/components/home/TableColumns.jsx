@@ -35,6 +35,27 @@ export const employeeColumns = () => {
       dataIndex: "cafe_id",
       key: "cafe_id",
     },
+    // TODO: Move this logic to the backend
+    // {
+    //   title: "Cafe Id",
+    //   dataIndex: "cafe_id",
+    //   key: "cafe_id",
+    //   render: async (text) => {
+    //     let data = await fetch(
+    //       `${import.meta.env.VITE_SERVER_URL}/cafe/${text}`
+    //     )
+    //       .then((res) => res.json())
+    //       .then((json) => {
+    //         console.log("json: ", json);
+    //         return json.data;
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //       });
+    //     console.log("data: ", data.name);
+    //     return <a>{data.name ?? text}</a>;
+    //   },
+    // },
   ];
 };
 

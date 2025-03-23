@@ -60,6 +60,7 @@ router.get("/employees", async (req, res) => {
         days_worked: calculateDaysWorked(employee.created_at),
       };
     });
+
     defineConsoleLogs(formattedEmployees);
 
     const total = await prisma.employee.count();
@@ -235,35 +236,32 @@ router.get("/employee/:id", async (req, res) => {
  * Get /cafe/:id
  * Get an existing cafe
  */
-router.get(
-  "/cafe/:id",
-  async (req, res) => {
-    try {
-      const { id } = req.params;
-      console.log(req.body);
-      const requestBody = req.body;
-      console.log(requestBody["name"]);
+router.get("/cafe/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(req.body);
+    const requestBody = req.body;
+    console.log(requestBody["name"]);
 
-      const cafeDetails = await prisma.cafe.findFirst({
-        where: {
-          id,
-        }
-      });
+    const cafeDetails = await prisma.cafe.findFirst({
+      where: {
+        id,
+      },
+    });
 
-      return res.status(HTTP_STATUS.OK).send({
-        success: true,
-        message: "Successfully retrieved cafe details.",
-        data: cafeDetails,
-      });
-    } catch (error) {
-      console.error(error);
-      return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
-        success: false,
-        message: "Internal server error",
-      });
-    }
+    return res.status(HTTP_STATUS.OK).send({
+      success: true,
+      message: "Successfully retrieved cafe details.",
+      data: cafeDetails,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
+      success: false,
+      message: "Internal server error",
+    });
   }
-);
+});
 
 /**
  * PUT /employee/:id
