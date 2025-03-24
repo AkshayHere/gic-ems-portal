@@ -6,6 +6,7 @@ import ListEmployees from "./pages/Employee/List";
 import React from "react";
 import NavBar from "./components/common/navbar";
 import ListCafes from "./pages/Cafe/List";
+import EmployeeDetails from "./pages/Employee/Detail";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/home" element={<Navigate to={"/"} />} />
             <Route path="/" element={<Home />} />
             <Route path="/employees" element={<ListEmployees />} />
+            <Route path="/employees/detail/:id" element={<EmployeeDetails />} />
             <Route path="/cafes" element={<ListCafes />} /> 
           </Route>
         </Routes>

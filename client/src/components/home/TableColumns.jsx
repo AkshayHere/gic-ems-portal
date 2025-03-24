@@ -2,17 +2,16 @@ import React from "react";
 
 export const employeeColumns = () => {
   return [
-    // TODO: Fix Employee Id column
-    // {
-    //   title: "Employee Id",
-    //   dataIndex: "id",
-    //   key: "id",
-    // },
     {
-      title: "Name",
+      title: "Employee Name",
       dataIndex: "name",
       key: "name",
-      render: (text) => <a>{text}</a>,
+      render: (text, record) => {
+        console.log("text: ", text);
+        console.log("record: ", record.id);
+        const redirectUrl = `/employees/detail/${record.id}`;
+        return <a href={redirectUrl}>{text}</a>;
+      },
     },
     {
       title: "Email Address",
@@ -31,31 +30,10 @@ export const employeeColumns = () => {
       render: (text) => <span>{text} days</span>,
     },
     {
-      title: "Cafe Id",
-      dataIndex: "cafe_id",
-      key: "cafe_id",
+      title: "Cafe Name",
+      dataIndex: "cafe_name",
+      key: "cafe_name",
     },
-    // TODO: Move this logic to the backend
-    // {
-    //   title: "Cafe Id",
-    //   dataIndex: "cafe_id",
-    //   key: "cafe_id",
-    //   render: async (text) => {
-    //     let data = await fetch(
-    //       `${import.meta.env.VITE_SERVER_URL}/cafe/${text}`
-    //     )
-    //       .then((res) => res.json())
-    //       .then((json) => {
-    //         console.log("json: ", json);
-    //         return json.data;
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       });
-    //     console.log("data: ", data.name);
-    //     return <a>{data.name ?? text}</a>;
-    //   },
-    // },
   ];
 };
 

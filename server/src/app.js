@@ -48,18 +48,27 @@ router.get("/employees", async (req, res) => {
       take: Number(limit),
     });
 
-    const formattedEmployees = employees.map((employee) => {
-      return {
-        id: employee.id,
-        name: employee.name,
-        email_address: employee.email_address,
-        gender: employee.gender,
-        phone_number: employee.phone_number,
-        created_at: employee.created_at,
-        cafe_id: employee.cafe_id,
-        days_worked: calculateDaysWorked(employee.created_at),
-      };
-    });
+    const formattedEmployees = await Promise.all(
+      employees.map(async (employee) => {
+        const cafeDetails = await prisma.cafe.findFirst({
+          where: {
+            id: employee.cafe_id,
+          },
+        });
+        // console.log("cafeDetails: ", cafeDetails);
+        return {
+          id: employee.id,
+          name: employee.name,
+          email_address: employee.email_address,
+          gender: employee.gender,
+          phone_number: employee.phone_number,
+          created_at: employee.created_at,
+          cafe_id: employee.cafe_id,
+          cafe_name: cafeDetails.name,
+          days_worked: calculateDaysWorked(employee.created_at),
+        };
+      })
+    );
 
     defineConsoleLogs(formattedEmployees);
 
