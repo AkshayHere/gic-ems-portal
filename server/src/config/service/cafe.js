@@ -1,9 +1,8 @@
 const prisma = require("../database");
 
-// Reference: https://stackoverflow.com/questions/55041467/how-to-await-a-promise
-const getEmployees = async (page, limit) => {
+const getCafes = async (page, limit) => {
   return new Promise((resolve, reject) => {
-    prisma.employee
+    prisma.cafe
       .findMany({
         skip: Number(page - 1) * Number(limit),
         take: Number(limit),
@@ -17,9 +16,9 @@ const getEmployees = async (page, limit) => {
   });
 };
 
-const getEmployeeCount = async () => {
+const getCafeCount = async () => {
   return new Promise((resolve, reject) => {
-    prisma.employee
+    prisma.cafe
       .count()
       .then((result) => {
         resolve(result);
@@ -30,12 +29,12 @@ const getEmployeeCount = async () => {
   });
 };
 
-const getEmployeeById = async (employeeId) => {
+const getCafeById = async (cafeId) => {
   return new Promise((resolve, reject) => {
-    prisma.employee
+    prisma.cafe
       .findUnique({
         where: {
-          id: employeeId,
+          id: cafeId,
         },
       })
       .then((result) => {
@@ -44,4 +43,4 @@ const getEmployeeById = async (employeeId) => {
   });
 };
 
-module.exports = { getEmployees, getEmployeeCount, getEmployeeById };
+module.exports = { getCafeById, getCafeCount, getCafes };

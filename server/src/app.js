@@ -17,6 +17,8 @@ const {
   updateCafeSchema,
   createCafeSchema,
 } = require("./config/service/validation");
+const { getEmployees, getEmployeeById, getEmployeeCount } = require("./config/service/employee");
+const { getCafeCount, getCafes, getCafeById } = require("./config/service/cafe");
 
 dotenv.config();
 app.use(cors());
@@ -43,11 +45,10 @@ router.get("/employees", async (req, res) => {
     page = currentPage;
     limit = currentLimit;
 
-    const employees = await prisma.employee.findMany({
-      skip: Number(page - 1) * Number(limit),
-      take: Number(limit),
-    });
+    const employees = await getEmployees(page, limit);
+    console.log("employees: ", employees);
 
+    // Reference: https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
     const formattedEmployees = await Promise.all(
       employees.map(async (employee) => {
         const cafeDetails = await prisma.cafe.findFirst({
@@ -72,7 +73,7 @@ router.get("/employees", async (req, res) => {
 
     defineConsoleLogs(formattedEmployees);
 
-    const total = await prisma.employee.count();
+    const total = await getEmployeeCount();
     return res.status(HTTP_STATUS.OK).send({
       success: true,
       message: "Successfully received all employees",
@@ -111,14 +112,11 @@ router.get("/cafes", async (req, res) => {
     page = currentPage;
     limit = currentLimit;
 
-    const cafes = await prisma.cafe.findMany({
-      skip: Number(page - 1) * Number(limit),
-      take: Number(limit),
-    });
+    const cafes = await getCafes(page, limit);
     console.log("cafes");
     console.log(cafes);
 
-    const total = await prisma.cafe.count();
+    const total = await getCafeCount();
     return res.status(HTTP_STATUS.OK).send({
       success: true,
       message: "Successfully received all cafes",
@@ -217,15 +215,10 @@ router.post(
 router.get("/employee/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     console.log(req.body);
     const requestBody = req.body;
-    console.log(requestBody["name"]);
-
-    const employeeDetails = await prisma.employee.findFirst({
-      where: {
-        id,
-      },
-    });
+    const employeeDetails = await getEmployeeById(id);
 
     return res.status(HTTP_STATUS.OK).send({
       success: true,
@@ -252,11 +245,7 @@ router.get("/cafe/:id", async (req, res) => {
     const requestBody = req.body;
     console.log(requestBody["name"]);
 
-    const cafeDetails = await prisma.cafe.findFirst({
-      where: {
-        id,
-      },
-    });
+    const cafeDetails = await getCafeById(id);
 
     return res.status(HTTP_STATUS.OK).send({
       success: true,
