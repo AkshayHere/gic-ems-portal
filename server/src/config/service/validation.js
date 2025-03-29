@@ -24,7 +24,7 @@ const createCafeSchema = z.object({
   name: z.string().min(6).max(10),
   description: z.string().min(10).max(255),
   location: z.string().min(10).max(100),
-  logo: z.string().min(10).max(100),
+  logo: z.string().min(10).max(100).nullable(),
 });
 
 const updateCafeSchema = z.object({

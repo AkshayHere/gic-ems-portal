@@ -57,9 +57,27 @@ const getEmployeeById = async (employeeId) => {
   });
 };
 
+const getEmployeesByCafeId = async (cafeId) => {
+  return new Promise((resolve, reject) => {
+    prisma.employee
+      .findMany({
+        where: {
+          cafe_id: cafeId,
+        },
+      })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
 module.exports = {
   getEmployees,
   getEmployeeCount,
   getEmployeeById,
   getAllEmployees,
+  getEmployeesByCafeId,
 };

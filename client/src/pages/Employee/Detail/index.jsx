@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, Form, Input, Col, Row, Radio, Popconfirm, Select } from "antd";
 
 const EmployeeDetails = (props) => {
   let { id } = useParams();
   const [form] = Form.useForm();
+  const history = useNavigate();
   const [disabled, setDisabled] = useState(true);
   const [employeeDetails, setEmployeeDetails] = useState({
     name: "",
@@ -67,7 +68,8 @@ const EmployeeDetails = (props) => {
         .then((res) => res.json())
         .then((json) => {
           if (json.success) {
-            window.location.href = "/employees";
+            // window.location.href = "/employees";
+            history('/employees');
           }
         })
         .catch((err) => {
@@ -136,7 +138,7 @@ const EmployeeDetails = (props) => {
             color="none"
             htmlType="submit"
             onClick={() => {
-              window.history.back();
+              history('/employees');
             }}
             variant="outlined"
             block

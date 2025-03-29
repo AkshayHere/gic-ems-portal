@@ -3,20 +3,20 @@ import "./index.css";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Button, Form, Input, Col, Row, Radio, Popconfirm, Select } from "antd";
+import TextArea from "antd/es/input/TextArea";
 
-const CreateEmployee = (props) => {
+const CafeDetails = (props) => {
   let { id } = useParams();
-  const [form] = Form.useForm();
   const history = useNavigate();
-  const [employeeDetails, setEmployeeDetails] = useState({
+  const [form] = Form.useForm();
+  const [disabled, setDisabled] = useState(true);
+  const [cafeDetails, setCafeDetails] = useState({
     name: "",
-    email_address: "",
-    phone_number: "",
-    gender: "",
+    description: "",
+    employees: 0,
+    location: "",
     cafe_id: null,
   });
-
-  const [cafeDetails, setCafeDetails] = useState([]);
 
   const onFinish = () => {
     console.log("Success:");
@@ -24,6 +24,9 @@ const CreateEmployee = (props) => {
     console.log("employeeDetails:", employeeDetails);
     form
       .validateFields((error, values) => {
+        console.log("validateFields");
+        console.log("error:", error);
+        console.log("values:", values);
         if (error) {
           console.error("error while validating");
           return;
@@ -31,10 +34,9 @@ const CreateEmployee = (props) => {
       })
       .then((values) => {
         console.log("valid values:", values);
-        employeeDetails.start_date = new Date();
-        console.log("employeeDetails:", employeeDetails); 
-        fetch(`${import.meta.env.VITE_SERVER_URL}/employee/create`, {
-          method: "POST",
+        // TODO: fetch data from server
+        fetch(`${import.meta.env.VITE_SERVER_URL}/cafe/${id}`, {
+          method: "PUT",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -44,7 +46,7 @@ const CreateEmployee = (props) => {
           .then((res) => res.json())
           .then((json) => {
             if (json.success) {
-              history('/employees');
+              window.location.reload();
             }
           })
           .catch((err) => {
@@ -55,26 +57,47 @@ const CreateEmployee = (props) => {
         console.log("errorInfo:", errorInfo);
       });
   };
-  const onFinishFailed = (employeeDetails) => {
-    console.log("Failed:", employeeDetails);
+
+  const onDelete = () => {
+    console.log("onDelete");
+    try {
+      fetch(`${import.meta.env.VITE_SERVER_URL}/cafe/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.success) {
+            history('/cafes');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.error("Unable to delete cafe.");
+      console.error(error);
+    }
+  };
+
+  const onFinishFailed = (cafeDetails) => {
+    console.log("Failed:", cafeDetails);
     console.log("form.getFieldsValue():", form.getFieldsValue(true));
-    form.setFieldsValue(employeeDetails);
+    form.setFieldsValue({
+      name: cafeDetails.name,
+      description: cafeDetails.description,
+      location: cafeDetails.location,
+      employees: cafeDetails.employees.length,
+      cafe_id: cafeDetails.cafe_id,
+    });
   };
 
   useEffect(() => {
-    // Populate cafe details
-    fetch(`${import.meta.env.VITE_SERVER_URL}/cafes/all`)
+    console.log(`/cafe/${id}`);
+    // Get employee details
+    fetch(`${import.meta.env.VITE_SERVER_URL}/cafe/${id}`)
       .then((res) => res.json())
       .then((json) => {
-        console.log(json.data.cafes);
-        const cafes = json.data.cafes;
-        const formatCafes = cafes.map((cafe) => {
-          return {
-            value: cafe.id,
-            label: cafe.name,
-          };
-        });
-        setCafeDetails(formatCafes);
+        setCafeDetails(json.data);
       })
       .catch((err) => {
         console.log(err);
@@ -82,15 +105,15 @@ const CreateEmployee = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(employeeDetails);
+    console.log(cafeDetails);
     form.setFieldsValue({
-      name: employeeDetails.name,
-      email_address: employeeDetails.email_address,
-      phone_number: employeeDetails.phone_number,
-      gender: employeeDetails.gender,
-      cafe_id: employeeDetails.cafe_id,
+      name: cafeDetails.name,
+      description: cafeDetails.description,
+      location: cafeDetails.location,
+      employees: cafeDetails.employees.length,
+      cafe_id: cafeDetails.cafe_id,
     });
-  }, [form, employeeDetails]);
+  }, [form, cafeDetails]);
 
   return (
     <div className="home">
@@ -101,7 +124,7 @@ const CreateEmployee = (props) => {
             color="none"
             htmlType="submit"
             onClick={() => {
-              history('/employees');
+              history('/cafes');
             }}
             variant="outlined"
             block
@@ -112,7 +135,7 @@ const CreateEmployee = (props) => {
       </Row>
       <Row>
         <Col className="header" span={12}>
-          Employees Details
+          Cafe Details
         </Col>
       </Row>
       <Row>
@@ -123,11 +146,12 @@ const CreateEmployee = (props) => {
               maxWidth: 600,
             }}
             form={form}
+            disabled={disabled}
             // onSubmit={() => {
             //   onFinish();
             // }}
             onFinishFailed={() => {
-              onFinishFailed(employeeDetails);
+              onFinishFailed(cafeDetails);
             }}
             autoComplete="off"
             layout="vertical"
@@ -135,83 +159,57 @@ const CreateEmployee = (props) => {
               console.log("onValuesChange");
               console.log(changedValues);
               console.log(allValues);
-              console.log(employeeDetails);
+              console.log(cafeDetails);
             }}
+            // onFieldsChange={(changedFields, allFields) => {
+            //   console.log('onFieldsChange');
+            //   console.log(changedFields);
+            //   console.log(allFields);
+            //   console.log(employeeDetails);
+            // }}
           >
             <Form.Item
-              label="Employee Name"
+              label="Cafe Name"
               name="name"
               rules={[
                 {
                   required: true,
                   min: 6,
                   max: 10,
-                  message: "Please input employee name.",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Email address"
-              name="email_address"
-              rules={[
-                {
-                  required: true,
-                  email: true,
-                  message: "Please input email address.",
+                  message: "Please input cafe name.",
                 },
               ]}
             >
               <Input />
             </Form.Item>
             <Form.Item
-              label="Phone number"
-              name="phone_number"
+              label="Description"
+              name="description"
               rules={[
                 {
                   required: true,
-                  pattern: /^[89]\d{7}$/,
-                  message: "Please input phone number.",
+                  message: "Please provide description.",
+                },
+              ]}
+            >
+              <TextArea rows={4} placeholder="Please provide description." />
+            </Form.Item>
+            <Form.Item
+              label="Location"
+              name="location"
+              rules={[
+                {
+                  required: true,
+                  min: 6,
+                  max: 30,
+                  message: "Please enter location.",
                 },
               ]}
             >
               <Input />
             </Form.Item>
-            <Form.Item
-              label={"Gender"}
-              name="gender"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select gender.",
-                },
-              ]}
-            >
-              <Radio.Group>
-                <Radio value={"MALE"}>Male</Radio>
-                <Radio value={"FEMALE"}>Female</Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item
-              label={"Cafe Details"}
-              name="cafe_id"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select cafe.",
-                },
-              ]}
-            >
-              <Select
-                defaultValue={form.cafe_id}
-                block
-                onChange={() => {
-                  console.log("onChange");
-                }}
-                options={cafeDetails}
-              />
+            <Form.Item label="Employees" name="employees">
+              <Input disabled={true} />
             </Form.Item>
           </Form>
         </Col>
@@ -225,41 +223,61 @@ const CreateEmployee = (props) => {
             htmlType="submit"
             onClick={(event) => {
               console.log("Submit");
+              setDisabled(false);
               console.log(form.fields);
               console.log(event.target.textContent);
-              onFinish();
+              // TODO: Tricky logic to update the submit. Relook this logic.
+              if (event.target.textContent === "Update") {
+                onFinish();
+              }
             }}
             block
           >
-            Create Employee
+            {disabled ? "Edit" : "Update"}
           </Button>
         </Col>
-        <Col className="header" span={6}>
+        <Col
+          className="header"
+          span={6}
+          style={{ display: !disabled ? "none" : "block" }}
+        >
           <Popconfirm
-            title="Are you sure you want to clear the form ?"
+            title="Are you sure delete this cafe ?"
             onConfirm={() => {
               console.log("onConfirm");
-              form.resetFields();
+              onDelete();
             }}
             onCancel={() => {
               console.log("onCancel");
-              onFinishFailed(employeeDetails);
             }}
             okText="Yes"
             cancelText="No"
           >
-            <Button
-              variant="solid"
-              color="red"
-              block
-            >
-              Clear
+            <Button variant="solid" color="red" block>
+              Delete
             </Button>
           </Popconfirm>
+        </Col>
+        <Col
+          className="header"
+          span={6}
+          style={{ display: disabled ? "none" : "block" }}
+        >
+          <Button
+            color="grey"
+            onClick={() => {
+              console.log("Cancel");
+              setDisabled(true);
+              onFinishFailed(cafeDetails);
+            }}
+            block
+          >
+            Cancel
+          </Button>
         </Col>
       </Row>
     </div>
   );
 };
 
-export default CreateEmployee;
+export default CafeDetails;

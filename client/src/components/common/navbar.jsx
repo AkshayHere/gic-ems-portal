@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Menu } from "antd";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const items = [
   {
@@ -26,9 +26,11 @@ const items = [
 
 const NavBar = () => {
   const [current, setCurrent] = useState("/");
+  const history = useNavigate();
   const onClick = (e) => {
     setCurrent(e.key);
-    window.location.href = e.key;
+    history(e.key);
+    // window.location.href = e.key;
   };
 
   useEffect(() => {

@@ -8,6 +8,7 @@ import NavBar from "./components/common/navbar";
 import ListCafes from "./pages/Cafe/List";
 import CreateEmployee from "./pages/Employee/Create";
 import EmployeeDetails from "./pages/Employee/Detail";
+import CafeDetails from "./pages/Cafe/Detail";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/employees/detail/:id" element={<EmployeeDetails />} />
             <Route path="/employees/create" element={<CreateEmployee />} /> 
             <Route path="/cafes" element={<ListCafes />} /> 
+            <Route path="/cafes/detail/:id" element={<CafeDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

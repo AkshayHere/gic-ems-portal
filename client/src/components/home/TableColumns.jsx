@@ -47,7 +47,12 @@ export const cafeColumns = () => [
     title: "Cafe name",
     dataIndex: "name",
     key: "name",
-    render: (text) => <a>{text}</a>,
+    render: (text, record) => {
+      console.log("text: ", text);
+      console.log("record: ", record.id);
+      const redirectUrl = `/cafes/detail/${record.id}`;
+      return <a href={redirectUrl}>{text}</a>;
+    },
   },
   {
     title: "Description",

@@ -22,6 +22,7 @@ const {
   getEmployeeById,
   getEmployeeCount,
   getAllEmployees,
+  getEmployeesByCafeId,
 } = require("./config/service/employee");
 const {
   getCafeCount,
@@ -225,7 +226,7 @@ router.post(
           name: requestBody["name"],
           description: requestBody["description"],
           location: requestBody["location"],
-          logo: requestBody["logo"],
+          logo: requestBody["logo"] ?? null,
         },
       });
 
@@ -317,10 +318,12 @@ router.get("/cafe/:id", async (req, res) => {
     const { id } = req.params;
     console.log(req.body);
     const requestBody = req.body;
-    console.log(requestBody["name"]);
-
+    // console.log(requestBody["name"]);
     const cafeDetails = await getCafeById(id);
-
+    // console.log("cafeDetails: ", cafeDetails);
+    const cafeEmployees = await getEmployeesByCafeId(id);
+    // console.log("cafeEmployees: ", cafeEmployees);
+    cafeDetails.employees = cafeEmployees;
     return res.status(HTTP_STATUS.OK).send({
       success: true,
       message: "Successfully retrieved cafe details.",
@@ -399,7 +402,7 @@ router.put(
           name: requestBody["name"],
           description: requestBody["description"],
           location: requestBody["location"],
-          logo: requestBody["logo"],
+          logo: requestBody["logo"] ?? null,
         },
       });
 

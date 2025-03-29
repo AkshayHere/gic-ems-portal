@@ -3,16 +3,11 @@ import PropTypes from "prop-types";
 import { Space, Table, Pagination } from "antd";
 
 const CustomTable = (props) => {
-  const { data, page, total, columns } = props;
+  const { data, page, total, columns, limit } = props;
 
   console.log(data);
   console.log(page);
   console.log(total);
-
-  // const onChange = (page, pageSize) => {
-  //   console.log(page);
-  //   console.log(pageSize);
-  // };
 
   return (
     <React.Fragment>
@@ -25,11 +20,13 @@ const CustomTable = (props) => {
           position: ["bottomCenter"],
           justifyContent: "center",
           total: total,
+          showSizeChanger: true,
           current: page,
-          pageSize: 5,
+          pageSize: limit,
           onChange: (page, pageSize) => {
-            // onChange(page, pageSize);
-            props.onPageChange(page);
+            console.log("page: ", page);
+            console.log("pageSize: ", pageSize);
+            props.onPageChange(page, pageSize);
           },
         }}
         bordered
@@ -43,6 +40,7 @@ CustomTable.propTypes = {
   columns: PropTypes.array.isRequired,
   page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   total: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  limit: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onPageChange: PropTypes.func,
 };
 
