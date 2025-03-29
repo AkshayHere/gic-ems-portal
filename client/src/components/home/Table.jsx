@@ -9,23 +9,26 @@ const CustomTable = (props) => {
   console.log(page);
   console.log(total);
 
-  const onChange = (page, pageSize) => {
-    console.log(page);
-    console.log(pageSize);
-  };
+  // const onChange = (page, pageSize) => {
+  //   console.log(page);
+  //   console.log(pageSize);
+  // };
 
   return (
     <React.Fragment>
       <Table
+        virtual
+        scroll={{ x: "100%" }}
         columns={columns}
         dataSource={data}
         pagination={{
-          align: "start",
+          position: ["bottomCenter"],
+          justifyContent: "center",
           total: total,
           current: page,
           pageSize: 5,
           onChange: (page, pageSize) => {
-            onChange(page, pageSize);
+            // onChange(page, pageSize);
             props.onPageChange(page);
           },
         }}

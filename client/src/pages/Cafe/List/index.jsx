@@ -11,17 +11,23 @@ const ListCafes = () => {
     total: 0,
   });
 
-  useEffect(() => {
+  const getCafes = (page) => {
+    console.log("getCafes");
+    console.log("page:", page);
+    console.log("pagination:", pagination);
     fetch(
-      `${import.meta.env.VITE_SERVER_URL}/cafes?page=${
-        pagination.page
-      }&limit=${pagination.limit}`
+      `${import.meta.env.VITE_SERVER_URL}/cafes?page=${pagination.page}&limit=${
+        pagination.limit
+      }`
     )
       .then((res) => res.json())
       .then((json) => {
+        console.log("json.data:", json.data);
+        console.log("json.data.employees:", json.data.employees);
         setCafes(json.data.cafes);
         setPagination((prevState) => ({
           ...prevState,
+          page,
           total: json.data.total,
         }));
       })
@@ -29,13 +35,16 @@ const ListCafes = () => {
         console.log(err);
         setCafes([]);
       });
-  }, [pagination.limit, pagination.page]);
+  };
+
+  useEffect(() => {
+    getCafes(pagination.page);
+  }, []);
 
   const handlePageChange = (page) => {
-    setPagination((prevState) => ({
-      ...prevState,
-      page,
-    }));
+    console.log("handlePageChange");
+    console.log("handlePageChange > page: ", page);
+    getCafes(page);
   };
 
   return (

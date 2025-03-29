@@ -6,6 +6,7 @@ import ListEmployees from "./pages/Employee/List";
 import React from "react";
 import NavBar from "./components/common/navbar";
 import ListCafes from "./pages/Cafe/List";
+import CreateEmployee from "./pages/Employee/Create";
 import EmployeeDetails from "./pages/Employee/Detail";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/employees" element={<ListEmployees />} />
             <Route path="/employees/detail/:id" element={<EmployeeDetails />} />
+            <Route path="/employees/create" element={<CreateEmployee />} /> 
             <Route path="/cafes" element={<ListCafes />} /> 
           </Route>
         </Routes>

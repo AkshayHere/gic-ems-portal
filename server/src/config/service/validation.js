@@ -1,10 +1,10 @@
 const { z } = require("zod");
 
-// Reference: 
+// Reference:
 // https://github.com/colinhacks/zod
 // https://zod.dev/
 const createEmployeeSchema = z.object({
-  name: z.string().min(10).max(50),
+  name: z.string().min(6).max(10),
   email_address: z.string().email("Not a valid email"),
   gender: z.enum(["MALE", "FEMALE"]),
   phone_number: z.string(),
@@ -13,7 +13,7 @@ const createEmployeeSchema = z.object({
 });
 
 const updateEmployeeSchema = z.object({
-  name: z.string().min(10).max(50),
+  name: z.string().min(6).max(10),
   email_address: z.string().email("Not a valid email"),
   gender: z.enum(["MALE", "FEMALE"]),
   phone_number: z.string(),
@@ -21,14 +21,14 @@ const updateEmployeeSchema = z.object({
 });
 
 const createCafeSchema = z.object({
-  name: z.string().min(10).max(100),
+  name: z.string().min(6).max(10),
   description: z.string().min(10).max(255),
   location: z.string().min(10).max(100),
   logo: z.string().min(10).max(100),
 });
 
 const updateCafeSchema = z.object({
-  name: z.string().min(10).max(100),
+  name: z.string().min(6).max(10),
   description: z.string().min(10).max(255),
   location: z.string().min(10).max(100),
 });

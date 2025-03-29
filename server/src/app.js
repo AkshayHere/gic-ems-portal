@@ -17,8 +17,18 @@ const {
   updateCafeSchema,
   createCafeSchema,
 } = require("./config/service/validation");
-const { getEmployees, getEmployeeById, getEmployeeCount } = require("./config/service/employee");
-const { getCafeCount, getCafes, getCafeById } = require("./config/service/cafe");
+const {
+  getEmployees,
+  getEmployeeById,
+  getEmployeeCount,
+  getAllEmployees,
+} = require("./config/service/employee");
+const {
+  getCafeCount,
+  getCafes,
+  getCafeById,
+  getAllCafes,
+} = require("./config/service/cafe");
 
 dotenv.config();
 app.use(cors());
@@ -76,10 +86,53 @@ router.get("/employees", async (req, res) => {
     const total = await getEmployeeCount();
     return res.status(HTTP_STATUS.OK).send({
       success: true,
-      message: "Successfully received all employees",
+      message: "Successfully received employees details.",
       data: {
         employees: formattedEmployees,
         total: total,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+router.get("/employees/all", async (req, res) => {
+  try {
+    const employees = await getAllEmployees();
+    console.log("employees: ", employees);
+
+    const formattedEmployees = await Promise.all(
+      employees.map(async (employee) => {
+        const cafeDetails = await prisma.cafe.findFirst({
+          where: {
+            id: employee.cafe_id,
+          },
+        });
+        return {
+          id: employee.id,
+          name: employee.name,
+          email_address: employee.email_address,
+          gender: employee.gender,
+          phone_number: employee.phone_number,
+          created_at: employee.created_at,
+          cafe_id: employee.cafe_id,
+          cafe_name: cafeDetails.name,
+          days_worked: calculateDaysWorked(employee.created_at),
+        };
+      })
+    );
+
+    defineConsoleLogs(formattedEmployees);
+    return res.status(HTTP_STATUS.OK).send({
+      success: true,
+      message: "Successfully received all employees",
+      data: {
+        employees: formattedEmployees,
       },
     });
   } catch (error) {
@@ -134,12 +187,33 @@ router.get("/cafes", async (req, res) => {
   }
 });
 
+router.get("/cafes/all", async (req, res) => {
+  try {
+    const cafes = await getAllCafes();
+    console.log("cafes");
+    console.log(cafes);
+    return res.status(HTTP_STATUS.OK).send({
+      success: true,
+      message: "Successfully received all cafes",
+      data: {
+        cafes,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
 /**
  * POST /cafe
  * Create a new cafe
  */
 router.post(
-  "/cafe",
+  "/cafe/create",
   validateRequestBody(createCafeSchema),
   async (req, res) => {
     try {
@@ -175,7 +249,7 @@ router.post(
  * Create a new employee
  */
 router.post(
-  "/employee",
+  "/employee/create",
   validateRequestBody(createEmployeeSchema),
   async (req, res) => {
     try {

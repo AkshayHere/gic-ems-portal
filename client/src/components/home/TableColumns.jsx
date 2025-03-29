@@ -6,6 +6,7 @@ export const employeeColumns = () => {
       title: "Employee Name",
       dataIndex: "name",
       key: "name",
+      width: 150,
       render: (text, record) => {
         console.log("text: ", text);
         console.log("record: ", record.id);
@@ -17,22 +18,26 @@ export const employeeColumns = () => {
       title: "Email Address",
       dataIndex: "email_address",
       key: "email_address",
+      width: 150,
     },
     {
       title: "Phone Number",
       dataIndex: "phone_number",
       key: "phone_number",
+      width: 150,
     },
     {
       title: "Days worked in the café",
       dataIndex: "days_worked",
       key: "days_worked",
+      width: 100,
       render: (text) => <span>{text} days</span>,
     },
     {
       title: "Cafe Name",
       dataIndex: "cafe_name",
       key: "cafe_name",
+      width: 200,
     },
   ];
 };

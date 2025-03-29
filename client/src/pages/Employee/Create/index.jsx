@@ -4,10 +4,9 @@ import { useParams } from "react-router-dom";
 
 import { Button, Form, Input, Col, Row, Radio, Popconfirm, Select } from "antd";
 
-const EmployeeDetails = (props) => {
+const CreateEmployee = (props) => {
   let { id } = useParams();
   const [form] = Form.useForm();
-  const [disabled, setDisabled] = useState(true);
   const [employeeDetails, setEmployeeDetails] = useState({
     name: "",
     email_address: "",
@@ -22,63 +21,34 @@ const EmployeeDetails = (props) => {
     console.log("Success:");
     const employeeDetails = form.getFieldsValue(true);
     console.log("employeeDetails:", employeeDetails);
-    form
-      .validateFields((error, values) => {
-        console.log("validateFields");
-        console.log("error:", error);
-        console.log("values:", values);
-        if (error) {
-          console.error("error while validating");
-          return;
+    form.validateFields((error, values) => {
+      if (error) {
+        console.error("error while validating");
+        return;
+      }
+    });
+
+    // TODO: fetch data from server
+    fetch(`${import.meta.env.VITE_SERVER_URL}/employee`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(employeeDetails),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        // setEmployeeDetails(json.data);
+        // console.log("json:", json);
+        if (json.success) {
+          window.location.reload();
         }
       })
-      .then((values) => {
-        console.log("valid values:", values);
-        // TODO: fetch data from server
-        fetch(`${import.meta.env.VITE_SERVER_URL}/employee/${id}`, {
-          method: "PUT",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(employeeDetails),
-        })
-          .then((res) => res.json())
-          .then((json) => {
-            if (json.success) {
-              window.location.reload();
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((errorInfo) => {
-        console.log("errorInfo:", errorInfo);
+      .catch((err) => {
+        console.log(err);
       });
   };
-
-  const onDelete = () => {
-    console.log("onDelete");
-    try {
-      fetch(`${import.meta.env.VITE_SERVER_URL}/employee/${id}`, {
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.success) {
-            window.location.href = "/employees";
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (error) {
-      console.error("Unable to delete employee.");
-      console.error(error);
-    }
-  };
-
   const onFinishFailed = (employeeDetails) => {
     console.log("Failed:", employeeDetails);
     console.log("form.getFieldsValue():", form.getFieldsValue(true));
@@ -86,17 +56,6 @@ const EmployeeDetails = (props) => {
   };
 
   useEffect(() => {
-    console.log(`/employee/${id}`);
-    // Get employee details
-    fetch(`${import.meta.env.VITE_SERVER_URL}/employee/${id}`)
-      .then((res) => res.json())
-      .then((json) => {
-        setEmployeeDetails(json.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     // Populate cafe details
     fetch(`${import.meta.env.VITE_SERVER_URL}/cafes/all`)
       .then((res) => res.json())
@@ -158,7 +117,6 @@ const EmployeeDetails = (props) => {
               maxWidth: 600,
             }}
             form={form}
-            disabled={disabled}
             // onSubmit={() => {
             //   onFinish();
             // }}
@@ -173,12 +131,6 @@ const EmployeeDetails = (props) => {
               console.log(allValues);
               console.log(employeeDetails);
             }}
-            // onFieldsChange={(changedFields, allFields) => {
-            //   console.log('onFieldsChange');
-            //   console.log(changedFields);
-            //   console.log(allFields);
-            //   console.log(employeeDetails);
-            // }}
           >
             <Form.Item
               label="Employee Name"
@@ -267,61 +219,43 @@ const EmployeeDetails = (props) => {
             htmlType="submit"
             onClick={(event) => {
               console.log("Submit");
-              setDisabled(false);
               console.log(form.fields);
               console.log(event.target.textContent);
-              // TODO: Tricky logic to update the submit. Relook this logic.
-              if (event.target.textContent === "Update") {
-                onFinish();
-              }
+              onFinish();
             }}
             block
           >
-            {disabled ? "Edit" : "Update"}
+            Create Employee
           </Button>
         </Col>
-        <Col
-          className="header"
-          span={6}
-          style={{ display: !disabled ? "none" : "block" }}
-        >
+        <Col className="header" span={6}>
           <Popconfirm
-            title="Are you sure delete this employee ?"
+            title="Are you sure you want to clear the form ?"
             onConfirm={() => {
               console.log("onConfirm");
-              onDelete();
             }}
             onCancel={() => {
               console.log("onCancel");
+              onFinishFailed(employeeDetails);
             }}
             okText="Yes"
             cancelText="No"
           >
-            <Button variant="solid" color="red" block>
-              Delete
+            <Button
+              variant="solid"
+              color="red"
+              onClick={() => {
+                console.log("delete");
+              }}
+              block
+            >
+              Clear
             </Button>
           </Popconfirm>
-        </Col>
-        <Col
-          className="header"
-          span={6}
-          style={{ display: disabled ? "none" : "block" }}
-        >
-          <Button
-            color="grey"
-            onClick={() => {
-              console.log("Cancel");
-              setDisabled(true);
-              onFinishFailed(employeeDetails);
-            }}
-            block
-          >
-            Cancel
-          </Button>
         </Col>
       </Row>
     </div>
   );
 };
 
-export default EmployeeDetails;
+export default CreateEmployee;

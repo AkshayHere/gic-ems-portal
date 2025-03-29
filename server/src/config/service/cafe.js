@@ -16,6 +16,19 @@ const getCafes = async (page, limit) => {
   });
 };
 
+const getAllCafes = async (page, limit) => {
+  return new Promise((resolve, reject) => {
+    prisma.cafe
+      .findMany()
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
 const getCafeCount = async () => {
   return new Promise((resolve, reject) => {
     prisma.cafe
@@ -43,4 +56,4 @@ const getCafeById = async (cafeId) => {
   });
 };
 
-module.exports = { getCafeById, getCafeCount, getCafes };
+module.exports = { getCafeById, getCafeCount, getCafes, getAllCafes };

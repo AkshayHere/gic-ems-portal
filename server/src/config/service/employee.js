@@ -17,6 +17,19 @@ const getEmployees = async (page, limit) => {
   });
 };
 
+const getAllEmployees = async () => {
+  return new Promise((resolve, reject) => {
+    prisma.employee
+      .findMany()
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
 const getEmployeeCount = async () => {
   return new Promise((resolve, reject) => {
     prisma.employee
@@ -44,4 +57,9 @@ const getEmployeeById = async (employeeId) => {
   });
 };
 
-module.exports = { getEmployees, getEmployeeCount, getEmployeeById };
+module.exports = {
+  getEmployees,
+  getEmployeeCount,
+  getEmployeeById,
+  getAllEmployees,
+};

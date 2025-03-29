@@ -1,4 +1,5 @@
 services:
+    # Reference: https://docs.docker.com/guides/nodejs/develop/
     postgres:
         container_name: database
         ports:
