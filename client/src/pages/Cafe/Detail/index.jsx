@@ -147,9 +147,6 @@ const CafeDetails = (props) => {
             }}
             form={form}
             disabled={disabled}
-            // onSubmit={() => {
-            //   onFinish();
-            // }}
             onFinishFailed={() => {
               onFinishFailed(cafeDetails);
             }}
@@ -161,12 +158,6 @@ const CafeDetails = (props) => {
               console.log(allValues);
               console.log(cafeDetails);
             }}
-            // onFieldsChange={(changedFields, allFields) => {
-            //   console.log('onFieldsChange');
-            //   console.log(changedFields);
-            //   console.log(allFields);
-            //   console.log(employeeDetails);
-            // }}
           >
             <Form.Item
               label="Cafe Name"

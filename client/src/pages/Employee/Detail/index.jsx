@@ -68,7 +68,6 @@ const EmployeeDetails = (props) => {
         .then((res) => res.json())
         .then((json) => {
           if (json.success) {
-            // window.location.href = "/employees";
             history('/employees');
           }
         })
@@ -161,9 +160,6 @@ const EmployeeDetails = (props) => {
             }}
             form={form}
             disabled={disabled}
-            // onSubmit={() => {
-            //   onFinish();
-            // }}
             onFinishFailed={() => {
               onFinishFailed(employeeDetails);
             }}
@@ -175,12 +171,6 @@ const EmployeeDetails = (props) => {
               console.log(allValues);
               console.log(employeeDetails);
             }}
-            // onFieldsChange={(changedFields, allFields) => {
-            //   console.log('onFieldsChange');
-            //   console.log(changedFields);
-            //   console.log(allFields);
-            //   console.log(employeeDetails);
-            // }}
           >
             <Form.Item
               label="Employee Name"

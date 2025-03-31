@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 const items = [
   {
     key: "grp",
-    label: "Endpoints",
+    label: "Overview",
     type: "group",
     children: [
       {
@@ -30,11 +30,9 @@ const NavBar = () => {
   const onClick = (e) => {
     setCurrent(e.key);
     history(e.key);
-    // window.location.href = e.key;
   };
 
   useEffect(() => {
-    // console.log("current: ", window.location.pathname);
     setCurrent(window.location.pathname);
   }, []);
 

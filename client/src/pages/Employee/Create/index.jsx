@@ -123,9 +123,6 @@ const CreateEmployee = (props) => {
               maxWidth: 600,
             }}
             form={form}
-            // onSubmit={() => {
-            //   onFinish();
-            // }}
             onFinishFailed={() => {
               onFinishFailed(employeeDetails);
             }}

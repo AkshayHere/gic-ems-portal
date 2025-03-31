@@ -14,24 +14,17 @@ const ListCafes = () => {
     total: 0,
   });
 
-  const getCafes = (page, limit) => {
+  const getCafes = () => {
     console.log("getCafes");
-    console.log("page:", page);
-    console.log("pagination:", pagination);
-    fetch(
-      // `${import.meta.env.VITE_SERVER_URL}/cafes?page=${page}&limit=${limit}`
-      `${import.meta.env.VITE_SERVER_URL}/cafes/all`
-    )
+    fetch(`${import.meta.env.VITE_SERVER_URL}/cafes/all`)
       .then((res) => res.json())
       .then((json) => {
         console.log("json.data:", json.data);
-        console.log("json.data.employees:", json.data.employees);
+        console.log("json.data.cafes:", json.data.cafes);
         setCafes(json.data.cafes);
         setPagination((prevState) => ({
           ...prevState,
-          page,
-          limit,
-          total: json.data.employees.length,
+          total: json.data.cafes.length,
         }));
       })
       .catch((err) => {
@@ -41,13 +34,22 @@ const ListCafes = () => {
   };
 
   useEffect(() => {
-    getCafes(pagination.page, pagination.limit);
+    getCafes();
   }, []);
 
-  const handlePageChange = (page, limit) => {
-    console.log("handlePageChange");
-    console.log("handlePageChange > page: ", page);
-    getCafes(page, limit);
+  const handleFilterChange = (page, limit, total) => {
+    setPagination((prevState) => ({
+      ...prevState,
+      page,
+      limit,
+      total,
+    }));
+  };
+
+  const onRowClick = (rowData) => {
+    console.log("onRowClick");
+    console.log("rowData: ", rowData);
+    history(`/cafes/detail/${rowData.id}`);
   };
 
   return (
@@ -72,8 +74,9 @@ const ListCafes = () => {
         page={pagination.page}
         total={pagination.total}
         limit={pagination.limit}
-        onPageChange={handlePageChange}
-        columns={cafeColumns()}
+        handleFilterChange={handleFilterChange}
+        onRowClick={onRowClick}
+        columns={cafeColumns(cafes)}
       />
     </div>
   );

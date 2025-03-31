@@ -14,11 +14,8 @@ const ListEmployees = () => {
     total: 0,
   });
 
-  const getEmployees = (page, limit) => {
+  const getEmployees = () => {
     console.log("getEmployees");
-    console.log("page:", page);
-    console.log("limit:", limit);
-    console.log("pagination:", pagination);
     fetch(`${import.meta.env.VITE_SERVER_URL}/employees/all`)
       .then((res) => res.json())
       .then((json) => {
@@ -27,8 +24,6 @@ const ListEmployees = () => {
         setEmployees(json.data.employees);
         setPagination((prevState) => ({
           ...prevState,
-          page,
-          limit,
           total: json.data.employees.length,
         }));
       })
@@ -39,7 +34,7 @@ const ListEmployees = () => {
   };
 
   useEffect(() => {
-    getEmployees(pagination.page, pagination.limit);
+    getEmployees();
   }, []);
 
   const handleFilterChange = (page, limit, total) => {
@@ -55,16 +50,10 @@ const ListEmployees = () => {
     }));
   };
 
-  const handlePageChange = (page, limit) => {
-    console.log("handlePageChange");
-    console.log("handlePageChange > page: ", page);
-    console.log("handlePageChange > limit: ", limit);
-    // getEmployees(page, limit);
-    setPagination((prevState) => ({
-      ...prevState,
-      page,
-      limit,
-    }));
+  const onRowClick = (rowData) => {
+    console.log("onRowClick");
+    console.log("rowData: ", rowData);
+    history(`/employees/detail/${rowData.id}`);
   };
 
   return (
@@ -89,8 +78,8 @@ const ListEmployees = () => {
         page={pagination.page}
         total={pagination.total}
         limit={pagination.limit}
-        onPageChange={handlePageChange}
         handleFilterChange={handleFilterChange}
+        onRowClick={onRowClick}
         columns={employeeColumns(employees)}
       />
     </div>

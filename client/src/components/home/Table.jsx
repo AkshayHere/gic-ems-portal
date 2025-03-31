@@ -23,16 +23,6 @@ const CustomTable = (props) => {
           showSizeChanger: true,
           current: page,
           pageSize: limit,
-          onChange: (page, pageSize) => {
-            console.log("page: ", page);
-            console.log("pageSize: ", pageSize);
-            props.onPageChange(page, pageSize);
-          },
-          // showTotal: (total, range) => {
-          //   console.log("total >> : ", total);
-          //   console.log("range >> : ", range);
-          //   return total;
-          // },
         }}
         onChange={(pagination, filters, sorter, extra) => {
           const { currentDataSource, action } = extra;
@@ -41,8 +31,18 @@ const CustomTable = (props) => {
           console.log("sorter >> ", sorter);
           console.log("currentDataSource >> ", currentDataSource);
           console.log("action >> ", action);
-          props.handleFilterChange(pagination.current, pagination.pageSize, currentDataSource.length);
+          props.handleFilterChange(
+            pagination.current,
+            pagination.pageSize,
+            currentDataSource.length
+          );
         }}
+        onRow={(rowData) => ({
+          onClick: () => {
+            console.log("onRowClick");
+            props.onRowClick(rowData);
+          },
+        })}
         bordered
       />
     </React.Fragment>
@@ -57,6 +57,7 @@ CustomTable.propTypes = {
   limit: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onPageChange: PropTypes.func,
   handleFilterChange: PropTypes.func,
+  onRowClick: PropTypes.func,
 };
 
 export default CustomTable;

@@ -8,7 +8,7 @@ export const employeeColumns = (employeeList = []) => {
     };
   });
 
-  const cafeName = [...new Set(employeeList.map(a => a.cafe_name))]
+  const cafeName = [...new Set(employeeList.map((a) => a.cafe_name))];
   const cafeFilters = cafeName.map((cafeName) => {
     return {
       text: cafeName,
@@ -28,16 +28,10 @@ export const employeeColumns = (employeeList = []) => {
       filterMode: "menu",
       filterSearch: true,
       onFilter: (value, record) => {
-        console.log('Column > Employee Name');
-        return record.name.includes(value)
+        console.log("Column > Employee Name");
+        return record.name.includes(value);
       },
       sorter: (a, b) => a.name.localeCompare(b.name),
-      render: (text, record) => {
-        console.log("text: ", text);
-        console.log("record: ", record.id);
-        const redirectUrl = `/employees/detail/${record.id}`;
-        return <a href={redirectUrl}>{text}</a>;
-      },
     },
     {
       title: "Email Address",
@@ -72,28 +66,51 @@ export const employeeColumns = (employeeList = []) => {
   ];
 };
 
-export const cafeColumns = () => [
-  {
-    title: "Cafe name",
-    dataIndex: "name",
-    key: "name",
-    render: (text, record) => {
-      console.log("text: ", text);
-      console.log("record: ", record.id);
-      const redirectUrl = `/cafes/detail/${record.id}`;
-      return <a href={redirectUrl}>{text}</a>;
+export const cafeColumns = (cafesList = []) => {
+  const cafeNameFilters = cafesList.map((cafe) => {
+    return {
+      text: cafe.name,
+      value: cafe.name,
+    };
+  });
+  console.log("cafeNameFilters: ", cafeNameFilters);
+  const locationFilters = [...new Set(cafesList.map((a) => a.location))].map((location) => {
+    return {
+      text: location,
+      value: location,
+    };
+  });
+  console.log("locationFilters: ", locationFilters);
+
+  return [
+    {
+      title: "Cafe name",
+      dataIndex: "name",
+      key: "name",
+      filters: cafeNameFilters,
+      filterSearch: true,
+      onFilter: (value, record) => {
+        console.log("Column > Cafe Name");
+        return record.name.includes(value);
+      },
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
-    sorter: (a, b) => a.name.localeCompare(b.name),
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-  },
-  {
-    title: "Location",
-    dataIndex: "location",
-    key: "location",
-    sorter: (a, b) => a.location.localeCompare(b.location),
-  },
-];
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+      sorter: (a, b) => a.location.localeCompare(b.location),
+      filters: locationFilters,
+      filterSearch: true,
+      onFilter: (value, record) => {
+        console.log("Column > Cafe Name");
+        return record.location.includes(value);
+      },
+    },
+  ];
+};

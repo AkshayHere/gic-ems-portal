@@ -38,7 +38,6 @@ app.use(express.json());
 router.get("/employees", async (req, res) => {
   try {
     let { page, limit } = req.query;
-    // console.log("router.stack: ", router.stack);
     const {
       page: currentPage,
       limit: currentLimit,
@@ -67,7 +66,6 @@ router.get("/employees", async (req, res) => {
             id: employee.cafe_id,
           },
         });
-        // console.log("cafeDetails: ", cafeDetails);
         return {
           id: employee.id,
           name: employee.name,
@@ -318,11 +316,8 @@ router.get("/cafe/:id", async (req, res) => {
     const { id } = req.params;
     console.log(req.body);
     const requestBody = req.body;
-    // console.log(requestBody["name"]);
     const cafeDetails = await getCafeById(id);
-    // console.log("cafeDetails: ", cafeDetails);
     const cafeEmployees = await getEmployeesByCafeId(id);
-    // console.log("cafeEmployees: ", cafeEmployees);
     cafeDetails.employees = cafeEmployees;
     return res.status(HTTP_STATUS.OK).send({
       success: true,
