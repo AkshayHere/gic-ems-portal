@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import "./index.css";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Button, Form, Input, Col, Row, Radio, Popconfirm, Select } from "antd";
+import { Button, Form, Input, Col, Row, Popconfirm, Avatar } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { getInitials } from "../../../components/common/services";
 
 const CafeDetails = (props) => {
   let { id } = useParams();
   const history = useNavigate();
   const [form] = Form.useForm();
   const [disabled, setDisabled] = useState(true);
+  const [initials, setInitials] = useState({
+    logo: null,
+    initialText: "",
+  });
   const [cafeDetails, setCafeDetails] = useState({
     name: "",
     description: "",
@@ -60,7 +65,7 @@ const CafeDetails = (props) => {
         .then((res) => res.json())
         .then((json) => {
           if (json.success) {
-            history('/cafes');
+            history("/cafes");
           }
         })
         .catch((err) => {
@@ -88,6 +93,12 @@ const CafeDetails = (props) => {
       .then((res) => res.json())
       .then((json) => {
         setCafeDetails(json.data);
+        const initialText = getInitials(json.data.name);
+        setInitials({
+          // TODO: Handle update and delete for logo.
+          logo: json.data.logo,
+          initialText,
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -113,7 +124,7 @@ const CafeDetails = (props) => {
             color="none"
             htmlType="submit"
             onClick={() => {
-              history('/cafes');
+              history("/cafes");
             }}
             variant="outlined"
             block
@@ -129,6 +140,18 @@ const CafeDetails = (props) => {
       </Row>
       <Row>
         <Col span={12}>
+          <Avatar
+            style={{
+              backgroundColor: "#fde3cf",
+              color: "#f56a00",
+              marginBottom: "20px",
+              marginLeft: "10px",
+            }}
+            src={initials.logo}
+            size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
+          >
+            {initials.initialText}
+          </Avatar>
           <Form
             name="basic"
             style={{

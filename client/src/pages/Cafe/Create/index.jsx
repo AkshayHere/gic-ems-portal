@@ -38,7 +38,7 @@ const CreateCafe = (props) => {
           .then((res) => res.json())
           .then((json) => {
             if (json.success) {
-              history('/employees');
+              history('/cafes');
             }
           })
           .catch((err) => {

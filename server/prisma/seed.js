@@ -36,7 +36,7 @@ function createCafeList() {
       name: faker.company.name(),
       description: faker.lorem.sentence(),
       location: faker.location.city(),
-      logo: faker.image.url(),
+      logo: faker.image.urlPicsumPhotos({ width: 256, height: 256 }), 
     });
   }
   return cafes;
