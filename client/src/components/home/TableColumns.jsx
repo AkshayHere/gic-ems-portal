@@ -18,6 +18,12 @@ export const employeeColumns = (employeeList = []) => {
 
   return [
     {
+      title: "Employee ID",
+      dataIndex: "employee_id",
+      key: "employee_id",
+      width: 150,
+    },
+    {
       title: "Employee Name",
       dataIndex: "name",
       key: "name",

@@ -74,10 +74,29 @@ const getEmployeesByCafeId = async (cafeId) => {
   });
 };
 
+const getLatestEmployeeDetails = async () => {
+  return new Promise((resolve, reject) => {
+    prisma.employee
+      .findMany({
+        orderBy: {
+          employee_id: "desc",
+        },
+        take: 1,
+      })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
 module.exports = {
   getEmployees,
   getEmployeeCount,
   getEmployeeById,
   getAllEmployees,
   getEmployeesByCafeId,
+  getLatestEmployeeDetails,
 };

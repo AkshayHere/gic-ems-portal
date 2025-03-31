@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const { faker } = require("@faker-js/faker");
+const { generateEmployeeId } = require("../src/config/service/common");
 const prisma = new PrismaClient();
 const SAMPLE_NUMBER = 50;
 
@@ -17,6 +18,7 @@ function createEmployeeList(cafes) {
 
     employees.push({
       id: faker.string.uuid(),
+      employee_id: generateEmployeeId(i),
       name: faker.person.fullName(),
       email_address: faker.internet.email(),
       gender: faker.number.binary() == 1 ? "MALE" : "FEMALE",

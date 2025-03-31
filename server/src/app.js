@@ -7,8 +7,8 @@ const HTTP_STATUS = require("./constants/httpStatus");
 const prisma = require("./config/database");
 const {
   defineConsoleLogs,
-  verifyPageAndLimit,
   calculateDaysWorked,
+  generateEmployeeId,
 } = require("./config/service/common");
 const {
   createEmployeeSchema,
@@ -23,6 +23,7 @@ const {
   getEmployeeCount,
   getAllEmployees,
   getEmployeesByCafeId,
+  getLatestEmployeeDetails,
 } = require("./config/service/employee");
 const {
   getCafeCount,
@@ -40,7 +41,6 @@ router.get("/employees", async (req, res) => {
     // TODO: Validate the Cafe Id format
     let { cafe } = req.query;
     const employees = await getAllEmployees();
-    
     let formattedEmployees = await Promise.all(
       employees.map(async (employee) => {
         const cafeDetails = await prisma.cafe.findFirst({
@@ -50,6 +50,7 @@ router.get("/employees", async (req, res) => {
         });
         return {
           id: employee.id,
+          employee_id: employee.employee_id,
           name: employee.name,
           email_address: employee.email_address,
           gender: employee.gender,
@@ -161,8 +162,18 @@ router.post(
   async (req, res) => {
     try {
       const requestBody = req.body;
+      // Get latest employee details
+      const latestEmployeeDetails = await getLatestEmployeeDetails();
+      // console.log("latestEmployeeDetails: ", latestEmployeeDetails);
+
+      const latestEmployeeId = generateEmployeeId(
+        latestEmployeeDetails[0].employee_id
+      );
+      // console.log("latestEmployeeId: ", latestEmployeeId);
+
       await prisma.employee.create({
         data: {
+          employee_id: latestEmployeeId,
           name: requestBody["name"],
           email_address: requestBody["email_address"],
           gender: requestBody["gender"],

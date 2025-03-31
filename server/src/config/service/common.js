@@ -3,6 +3,13 @@ class Common {
     console.log(`${new Date().toISOString()} - `, message);
   }
 
+  generateEmployeeId(latestEmployeeId = 1) {
+    const zeroPad = (num, places) => String(num).padStart(places, "0");
+    const latestCount = latestEmployeeId.toString().replace("UI", "");
+    const finalCount = Number(latestCount) + 1;
+    return `UI${zeroPad(finalCount, 7)}`; 
+  }
+
   calculateDaysWorked(created_at) {
     const now = new Date();
     const createdAt = new Date(created_at);
