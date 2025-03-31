@@ -1,12 +1,37 @@
 import React from "react";
 
-export const employeeColumns = () => {
+export const employeeColumns = (employeeList = []) => {
+  const employeeFilters = employeeList.map((employee) => {
+    return {
+      text: employee.name,
+      value: employee.name,
+    };
+  });
+
+  const cafeName = [...new Set(employeeList.map(a => a.cafe_name))]
+  const cafeFilters = cafeName.map((cafeName) => {
+    return {
+      text: cafeName,
+      value: cafeName,
+    };
+  });
+  console.log("employeeFilters: ", employeeFilters);
+  console.log("cafeFilters: ", cafeFilters);
+
   return [
     {
       title: "Employee Name",
       dataIndex: "name",
       key: "name",
       width: 150,
+      filters: employeeFilters,
+      filterMode: "menu",
+      filterSearch: true,
+      onFilter: (value, record) => {
+        console.log('Column > Employee Name');
+        return record.name.includes(value)
+      },
+      sorter: (a, b) => a.name.localeCompare(b.name),
       render: (text, record) => {
         console.log("text: ", text);
         console.log("record: ", record.id);
@@ -38,6 +63,11 @@ export const employeeColumns = () => {
       dataIndex: "cafe_name",
       key: "cafe_name",
       width: 200,
+      filters: cafeFilters,
+      filterMode: "menu",
+      filterSearch: true,
+      onFilter: (value, record) => record.cafe_name.includes(value),
+      sorter: (a, b) => a.cafe_name.localeCompare(b.cafe_name),
     },
   ];
 };
@@ -53,6 +83,7 @@ export const cafeColumns = () => [
       const redirectUrl = `/cafes/detail/${record.id}`;
       return <a href={redirectUrl}>{text}</a>;
     },
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: "Description",
@@ -63,5 +94,6 @@ export const cafeColumns = () => [
     title: "Location",
     dataIndex: "location",
     key: "location",
+    sorter: (a, b) => a.location.localeCompare(b.location),
   },
 ];

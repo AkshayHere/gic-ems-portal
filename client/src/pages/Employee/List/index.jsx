@@ -19,11 +19,7 @@ const ListEmployees = () => {
     console.log("page:", page);
     console.log("limit:", limit);
     console.log("pagination:", pagination);
-    fetch(
-      `${import.meta.env.VITE_SERVER_URL}/employees?page=${page}&limit=${
-        limit
-      }`
-    )
+    fetch(`${import.meta.env.VITE_SERVER_URL}/employees/all`)
       .then((res) => res.json())
       .then((json) => {
         console.log("json.data:", json.data);
@@ -33,7 +29,7 @@ const ListEmployees = () => {
           ...prevState,
           page,
           limit,
-          total: json.data.total,
+          total: json.data.employees.length,
         }));
       })
       .catch((err) => {
@@ -46,11 +42,29 @@ const ListEmployees = () => {
     getEmployees(pagination.page, pagination.limit);
   }, []);
 
+  const handleFilterChange = (page, limit, total) => {
+    console.log("handleFilterChange");
+    console.log("handleFilterChange > page: ", page);
+    console.log("handleFilterChange > limit: ", limit);
+    console.log("handleFilterChange > total: ", total);
+    setPagination((prevState) => ({
+      ...prevState,
+      page,
+      limit,
+      total,
+    }));
+  };
+
   const handlePageChange = (page, limit) => {
     console.log("handlePageChange");
     console.log("handlePageChange > page: ", page);
-    console.log("handlePageChange > limit: ", limit); 
-    getEmployees(page, limit);
+    console.log("handlePageChange > limit: ", limit);
+    // getEmployees(page, limit);
+    setPagination((prevState) => ({
+      ...prevState,
+      page,
+      limit,
+    }));
   };
 
   return (
@@ -62,7 +76,7 @@ const ListEmployees = () => {
             variant="solid"
             color="green"
             onClick={() => {
-              history('/employees/create');
+              history("/employees/create");
             }}
             block
           >
@@ -76,7 +90,8 @@ const ListEmployees = () => {
         total={pagination.total}
         limit={pagination.limit}
         onPageChange={handlePageChange}
-        columns={employeeColumns()}
+        handleFilterChange={handleFilterChange}
+        columns={employeeColumns(employees)}
       />
     </div>
   );

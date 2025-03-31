@@ -19,9 +19,8 @@ const ListCafes = () => {
     console.log("page:", page);
     console.log("pagination:", pagination);
     fetch(
-      `${import.meta.env.VITE_SERVER_URL}/cafes?page=${page}&limit=${
-        limit
-      }`
+      // `${import.meta.env.VITE_SERVER_URL}/cafes?page=${page}&limit=${limit}`
+      `${import.meta.env.VITE_SERVER_URL}/cafes/all`
     )
       .then((res) => res.json())
       .then((json) => {
@@ -32,7 +31,7 @@ const ListCafes = () => {
           ...prevState,
           page,
           limit,
-          total: json.data.total,
+          total: json.data.employees.length,
         }));
       })
       .catch((err) => {
@@ -60,7 +59,7 @@ const ListCafes = () => {
             variant="solid"
             color="green"
             onClick={() => {
-              // window.location.href = "/cafes/create";
+              history("/cafes/create");
             }}
             block
           >

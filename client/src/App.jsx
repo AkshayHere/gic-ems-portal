@@ -9,6 +9,7 @@ import ListCafes from "./pages/Cafe/List";
 import CreateEmployee from "./pages/Employee/Create";
 import EmployeeDetails from "./pages/Employee/Detail";
 import CafeDetails from "./pages/Cafe/Detail";
+import CreateCafe from "./pages/Cafe/Create";
 
 function App() {
   return (
@@ -20,9 +21,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/employees" element={<ListEmployees />} />
             <Route path="/employees/detail/:id" element={<EmployeeDetails />} />
-            <Route path="/employees/create" element={<CreateEmployee />} /> 
-            <Route path="/cafes" element={<ListCafes />} /> 
+            <Route path="/employees/create" element={<CreateEmployee />} />
+            <Route path="/cafes" element={<ListCafes />} />
             <Route path="/cafes/detail/:id" element={<CafeDetails />} />
+            <Route path="/cafes/create" element={<CreateCafe />} />
           </Route>
         </Routes>
       </BrowserRouter>
