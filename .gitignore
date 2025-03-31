@@ -1,4 +1,4 @@
 node_modules/
-docker_test_db/
+postgres_db/
 */.env
 .vscode

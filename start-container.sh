@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ -d docker_test_db/ ]; then
+if [ -d postgres_db/ ]; then
     echo "Directory exists. Removing it."
-    rm -r docker_test_db/
+    rm -r postgres_db/
 fi
 
 # We should remove the node_modules folder if it exists
@@ -18,7 +18,8 @@ echo "Building container..."
 # docker compose -f docker-compose.yml up -d --build
 echo docker compose -f docker-compose.yml down -v
 
-echo "Current variable is $1"
+# This means we will clean it up and create a new container
+# echo "Current variable is $1"
 if [[ $1 == "new" ]]; then
     echo "Prompt to build new container."        
     docker compose -f docker-compose.yml up -d --build
