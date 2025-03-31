@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Button, Form, Input, Col, Row, Radio, Popconfirm, Select } from "antd";
 
 const CreateEmployee = (props) => {
-  let { id } = useParams();
   const [form] = Form.useForm();
   const history = useNavigate();
   const [employeeDetails, setEmployeeDetails] = useState({
@@ -19,9 +18,7 @@ const CreateEmployee = (props) => {
   const [cafeDetails, setCafeDetails] = useState([]);
 
   const onFinish = () => {
-    console.log("Success:");
     const employeeDetails = form.getFieldsValue(true);
-    console.log("employeeDetails:", employeeDetails);
     form
       .validateFields((error, values) => {
         if (error) {
@@ -30,9 +27,7 @@ const CreateEmployee = (props) => {
         }
       })
       .then((values) => {
-        console.log("valid values:", values);
         employeeDetails.start_date = new Date();
-        console.log("employeeDetails:", employeeDetails); 
         fetch(`${import.meta.env.VITE_SERVER_URL}/employee/create`, {
           method: "POST",
           headers: {
@@ -44,20 +39,18 @@ const CreateEmployee = (props) => {
           .then((res) => res.json())
           .then((json) => {
             if (json.success) {
-              history('/employees');
+              history("/employees");
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
           });
       })
       .catch((errorInfo) => {
-        console.log("errorInfo:", errorInfo);
+        console.error("errorInfo:", errorInfo);
       });
   };
   const onFinishFailed = (employeeDetails) => {
-    console.log("Failed:", employeeDetails);
-    console.log("form.getFieldsValue():", form.getFieldsValue(true));
     form.setFieldsValue(employeeDetails);
   };
 
@@ -66,7 +59,6 @@ const CreateEmployee = (props) => {
     fetch(`${import.meta.env.VITE_SERVER_URL}/cafes/all`)
       .then((res) => res.json())
       .then((json) => {
-        console.log(json.data.cafes);
         const cafes = json.data.cafes;
         const formatCafes = cafes.map((cafe) => {
           return {
@@ -77,12 +69,11 @@ const CreateEmployee = (props) => {
         setCafeDetails(formatCafes);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
   useEffect(() => {
-    console.log(employeeDetails);
     form.setFieldsValue({
       name: employeeDetails.name,
       email_address: employeeDetails.email_address,
@@ -101,7 +92,7 @@ const CreateEmployee = (props) => {
             color="none"
             htmlType="submit"
             onClick={() => {
-              history('/employees');
+              history("/employees");
             }}
             variant="outlined"
             block
@@ -128,12 +119,12 @@ const CreateEmployee = (props) => {
             }}
             autoComplete="off"
             layout="vertical"
-            onValuesChange={(changedValues, allValues) => {
-              console.log("onValuesChange");
-              console.log(changedValues);
-              console.log(allValues);
-              console.log(employeeDetails);
-            }}
+            // onValuesChange={(changedValues, allValues) => {
+            //   console.log("onValuesChange");
+            //   console.log(changedValues);
+            //   console.log(allValues);
+            //   console.log(employeeDetails);
+            // }}
           >
             <Form.Item
               label="Employee Name"
@@ -204,9 +195,9 @@ const CreateEmployee = (props) => {
               <Select
                 defaultValue={form.cafe_id}
                 block
-                onChange={() => {
-                  console.log("onChange");
-                }}
+                // onChange={() => {
+                //   console.log("onChange");
+                // }}
                 options={cafeDetails}
               />
             </Form.Item>
@@ -221,9 +212,6 @@ const CreateEmployee = (props) => {
             color="green"
             htmlType="submit"
             onClick={(event) => {
-              console.log("Submit");
-              console.log(form.fields);
-              console.log(event.target.textContent);
               onFinish();
             }}
             block
@@ -235,21 +223,15 @@ const CreateEmployee = (props) => {
           <Popconfirm
             title="Are you sure you want to clear the form ?"
             onConfirm={() => {
-              console.log("onConfirm");
               form.resetFields();
             }}
             onCancel={() => {
-              console.log("onCancel");
               onFinishFailed(employeeDetails);
             }}
             okText="Yes"
             cancelText="No"
           >
-            <Button
-              variant="solid"
-              color="red"
-              block
-            >
+            <Button variant="solid" color="red" block>
               Clear
             </Button>
           </Popconfirm>

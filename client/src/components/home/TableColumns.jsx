@@ -15,8 +15,6 @@ export const employeeColumns = (employeeList = []) => {
       value: cafeName,
     };
   });
-  console.log("employeeFilters: ", employeeFilters);
-  console.log("cafeFilters: ", cafeFilters);
 
   return [
     {
@@ -28,7 +26,6 @@ export const employeeColumns = (employeeList = []) => {
       filterMode: "menu",
       filterSearch: true,
       onFilter: (value, record) => {
-        console.log("Column > Employee Name");
         return record.name.includes(value);
       },
       sorter: (a, b) => a.name.localeCompare(b.name),
@@ -73,14 +70,12 @@ export const cafeColumns = (cafesList = []) => {
       value: cafe.name,
     };
   });
-  console.log("cafeNameFilters: ", cafeNameFilters);
   const locationFilters = [...new Set(cafesList.map((a) => a.location))].map((location) => {
     return {
       text: location,
       value: location,
     };
   });
-  console.log("locationFilters: ", locationFilters);
 
   return [
     {
@@ -90,7 +85,6 @@ export const cafeColumns = (cafesList = []) => {
       filters: cafeNameFilters,
       filterSearch: true,
       onFilter: (value, record) => {
-        console.log("Column > Cafe Name");
         return record.name.includes(value);
       },
       sorter: (a, b) => a.name.localeCompare(b.name),
@@ -108,9 +102,13 @@ export const cafeColumns = (cafesList = []) => {
       filters: locationFilters,
       filterSearch: true,
       onFilter: (value, record) => {
-        console.log("Column > Cafe Name");
         return record.location.includes(value);
       },
+    },
+    {
+      title: "Cafe Id",
+      dataIndex: "id",
+      key: "id",
     },
   ];
 };

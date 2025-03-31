@@ -21,14 +21,14 @@ const updateEmployeeSchema = z.object({
 });
 
 const createCafeSchema = z.object({
-  name: z.string().min(6).max(10),
+  name: z.string().min(6).max(50),
   description: z.string().min(10).max(255),
   location: z.string().min(10).max(100),
   logo: z.string().min(10).max(100).optional(),
 });
 
 const updateCafeSchema = z.object({
-  name: z.string().min(6).max(10),
+  name: z.string().min(6).max(50),
   description: z.string().min(10).max(255),
   location: z.string().min(10).max(100),
 });

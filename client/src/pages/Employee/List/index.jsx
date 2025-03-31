@@ -15,12 +15,9 @@ const ListEmployees = () => {
   });
 
   const getEmployees = () => {
-    console.log("getEmployees");
     fetch(`${import.meta.env.VITE_SERVER_URL}/employees/all`)
       .then((res) => res.json())
       .then((json) => {
-        console.log("json.data:", json.data);
-        console.log("json.data.employees:", json.data.employees);
         setEmployees(json.data.employees);
         setPagination((prevState) => ({
           ...prevState,
@@ -28,7 +25,7 @@ const ListEmployees = () => {
         }));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         setEmployees([]);
       });
   };
@@ -38,10 +35,6 @@ const ListEmployees = () => {
   }, []);
 
   const handleFilterChange = (page, limit, total) => {
-    console.log("handleFilterChange");
-    console.log("handleFilterChange > page: ", page);
-    console.log("handleFilterChange > limit: ", limit);
-    console.log("handleFilterChange > total: ", total);
     setPagination((prevState) => ({
       ...prevState,
       page,
@@ -51,8 +44,6 @@ const ListEmployees = () => {
   };
 
   const onRowClick = (rowData) => {
-    console.log("onRowClick");
-    console.log("rowData: ", rowData);
     history(`/employees/detail/${rowData.id}`);
   };
 

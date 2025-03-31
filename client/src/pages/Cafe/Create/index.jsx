@@ -17,21 +17,15 @@ const CreateCafe = (props) => {
   });
 
   const onFinish = () => {
-    console.log("Success:");
     const cafeDetails = form.getFieldsValue(true);
-    console.log("cafeDetails:", cafeDetails);
     form
       .validateFields((error, values) => {
-        console.log("validateFields");
-        console.log("error:", error);
-        console.log("values:", values);
         if (error) {
           console.error("error while validating");
           return;
         }
       })
       .then((values) => {
-        console.log("valid values:", values);
         // TODO: fetch data from server
         fetch(`${import.meta.env.VITE_SERVER_URL}/cafe/create`, {
           method: "POST",
@@ -48,17 +42,15 @@ const CreateCafe = (props) => {
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
           });
       })
       .catch((errorInfo) => {
-        console.log("errorInfo:", errorInfo);
+        console.error("errorInfo:", errorInfo);
       });
   };
 
   const onFinishFailed = (cafeDetails) => {
-    console.log("Failed:", cafeDetails);
-    console.log("form.getFieldsValue():", form.getFieldsValue(true));
     form.setFieldsValue({
       name: cafeDetails.name,
       description: cafeDetails.description,
@@ -70,7 +62,6 @@ const CreateCafe = (props) => {
   useEffect(() => {}, []);
 
   useEffect(() => {
-    console.log(cafeDetails);
     form.setFieldsValue({
       name: cafeDetails.name,
       description: cafeDetails.description,
@@ -115,12 +106,6 @@ const CreateCafe = (props) => {
             }}
             autoComplete="off"
             layout="vertical"
-            onValuesChange={(changedValues, allValues) => {
-              console.log("onValuesChange");
-              console.log(changedValues);
-              console.log(allValues);
-              console.log(cafeDetails);
-            }}
           >
             <Form.Item
               label="Cafe Name"
@@ -129,7 +114,7 @@ const CreateCafe = (props) => {
                 {
                   required: true,
                   min: 6,
-                  max: 10,
+                  max: 50,
                   message: "Please input cafe name.",
                 },
               ]}
@@ -142,6 +127,8 @@ const CreateCafe = (props) => {
               rules={[
                 {
                   required: true,
+                  min: 10,
+                  max: 255,
                   message: "Please provide description.",
                 },
               ]}
@@ -154,8 +141,8 @@ const CreateCafe = (props) => {
               rules={[
                 {
                   required: true,
-                  min: 6,
-                  max: 30,
+                  min: 10,
+                  max: 100,
                   message: "Please enter location.",
                 },
               ]}
@@ -173,9 +160,6 @@ const CreateCafe = (props) => {
             color="green"
             htmlType="submit"
             onClick={(event) => {
-              console.log("Submit");
-              console.log(form.fields);
-              console.log(event.target.textContent);
               onFinish();
             }}
             block

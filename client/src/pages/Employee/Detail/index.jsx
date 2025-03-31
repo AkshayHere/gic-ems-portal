@@ -20,21 +20,15 @@ const EmployeeDetails = (props) => {
   const [cafeDetails, setCafeDetails] = useState([]);
 
   const onFinish = () => {
-    console.log("Success:");
     const employeeDetails = form.getFieldsValue(true);
-    console.log("employeeDetails:", employeeDetails);
     form
       .validateFields((error, values) => {
-        console.log("validateFields");
-        console.log("error:", error);
-        console.log("values:", values);
         if (error) {
           console.error("error while validating");
           return;
         }
       })
       .then((values) => {
-        console.log("valid values:", values);
         // TODO: fetch data from server
         fetch(`${import.meta.env.VITE_SERVER_URL}/employee/${id}`, {
           method: "PUT",
@@ -47,20 +41,20 @@ const EmployeeDetails = (props) => {
           .then((res) => res.json())
           .then((json) => {
             if (json.success) {
+              // So that we get the latest data from backend.
               window.location.reload();
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
           });
       })
       .catch((errorInfo) => {
-        console.log("errorInfo:", errorInfo);
+        console.error("errorInfo:", errorInfo);
       });
   };
 
   const onDelete = () => {
-    console.log("onDelete");
     try {
       fetch(`${import.meta.env.VITE_SERVER_URL}/employee/${id}`, {
         method: "DELETE",
@@ -68,11 +62,11 @@ const EmployeeDetails = (props) => {
         .then((res) => res.json())
         .then((json) => {
           if (json.success) {
-            history('/employees');
+            history("/employees");
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     } catch (error) {
       console.error("Unable to delete employee.");
@@ -81,13 +75,10 @@ const EmployeeDetails = (props) => {
   };
 
   const onFinishFailed = (employeeDetails) => {
-    console.log("Failed:", employeeDetails);
-    console.log("form.getFieldsValue():", form.getFieldsValue(true));
     form.setFieldsValue(employeeDetails);
   };
 
   useEffect(() => {
-    console.log(`/employee/${id}`);
     // Get employee details
     fetch(`${import.meta.env.VITE_SERVER_URL}/employee/${id}`)
       .then((res) => res.json())
@@ -95,14 +86,13 @@ const EmployeeDetails = (props) => {
         setEmployeeDetails(json.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
 
     // Populate cafe details
     fetch(`${import.meta.env.VITE_SERVER_URL}/cafes/all`)
       .then((res) => res.json())
       .then((json) => {
-        console.log(json.data.cafes);
         const cafes = json.data.cafes;
         const formatCafes = cafes.map((cafe) => {
           return {
@@ -113,12 +103,11 @@ const EmployeeDetails = (props) => {
         setCafeDetails(formatCafes);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
   useEffect(() => {
-    console.log(employeeDetails);
     form.setFieldsValue({
       name: employeeDetails.name,
       email_address: employeeDetails.email_address,
@@ -137,7 +126,7 @@ const EmployeeDetails = (props) => {
             color="none"
             htmlType="submit"
             onClick={() => {
-              history('/employees');
+              history("/employees");
             }}
             variant="outlined"
             block
@@ -165,12 +154,12 @@ const EmployeeDetails = (props) => {
             }}
             autoComplete="off"
             layout="vertical"
-            onValuesChange={(changedValues, allValues) => {
-              console.log("onValuesChange");
-              console.log(changedValues);
-              console.log(allValues);
-              console.log(employeeDetails);
-            }}
+            // onValuesChange={(changedValues, allValues) => {
+            //   console.log("onValuesChange");
+            //   console.log(changedValues);
+            //   console.log(allValues);
+            //   console.log(employeeDetails);
+            // }}
           >
             <Form.Item
               label="Employee Name"
@@ -258,10 +247,7 @@ const EmployeeDetails = (props) => {
             color="green"
             htmlType="submit"
             onClick={(event) => {
-              console.log("Submit");
               setDisabled(false);
-              console.log(form.fields);
-              console.log(event.target.textContent);
               // TODO: Tricky logic to update the submit. Relook this logic.
               if (event.target.textContent === "Update") {
                 onFinish();
@@ -280,12 +266,9 @@ const EmployeeDetails = (props) => {
           <Popconfirm
             title="Are you sure delete this employee ?"
             onConfirm={() => {
-              console.log("onConfirm");
               onDelete();
             }}
-            onCancel={() => {
-              console.log("onCancel");
-            }}
+            // onCancel={() => {}}
             okText="Yes"
             cancelText="No"
           >
@@ -302,7 +285,6 @@ const EmployeeDetails = (props) => {
           <Button
             color="grey"
             onClick={() => {
-              console.log("Cancel");
               setDisabled(true);
               onFinishFailed(employeeDetails);
             }}

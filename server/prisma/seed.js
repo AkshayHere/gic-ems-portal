@@ -67,7 +67,7 @@ async function init() {
         await prisma.$disconnect();
         process.exit(1);
       });
-    console.log("Database is successully seeded");
+    console.log("Database is successfully seeded");
   } else {
     console.log("Database seeding is not needed");
   }

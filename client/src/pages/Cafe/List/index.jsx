@@ -15,12 +15,9 @@ const ListCafes = () => {
   });
 
   const getCafes = () => {
-    console.log("getCafes");
     fetch(`${import.meta.env.VITE_SERVER_URL}/cafes/all`)
       .then((res) => res.json())
       .then((json) => {
-        console.log("json.data:", json.data);
-        console.log("json.data.cafes:", json.data.cafes);
         setCafes(json.data.cafes);
         setPagination((prevState) => ({
           ...prevState,
@@ -28,7 +25,7 @@ const ListCafes = () => {
         }));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         setCafes([]);
       });
   };
@@ -47,8 +44,6 @@ const ListCafes = () => {
   };
 
   const onRowClick = (rowData) => {
-    console.log("onRowClick");
-    console.log("rowData: ", rowData);
     history(`/cafes/detail/${rowData.id}`);
   };
 

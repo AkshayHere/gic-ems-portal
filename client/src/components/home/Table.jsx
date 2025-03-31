@@ -5,10 +5,6 @@ import { Space, Table, Pagination } from "antd";
 const CustomTable = (props) => {
   const { data, page, total, columns, limit } = props;
 
-  console.log(data);
-  console.log(page);
-  console.log(total);
-
   return (
     <React.Fragment>
       <Table
@@ -25,12 +21,7 @@ const CustomTable = (props) => {
           pageSize: limit,
         }}
         onChange={(pagination, filters, sorter, extra) => {
-          const { currentDataSource, action } = extra;
-          console.log("pagination >> ", pagination);
-          console.log("filters >> ", filters);
-          console.log("sorter >> ", sorter);
-          console.log("currentDataSource >> ", currentDataSource);
-          console.log("action >> ", action);
+          const { currentDataSource } = extra;
           props.handleFilterChange(
             pagination.current,
             pagination.pageSize,
@@ -39,7 +30,6 @@ const CustomTable = (props) => {
         }}
         onRow={(rowData) => ({
           onClick: () => {
-            console.log("onRowClick");
             props.onRowClick(rowData);
           },
         })}

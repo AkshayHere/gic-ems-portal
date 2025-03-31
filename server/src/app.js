@@ -56,7 +56,6 @@ router.get("/employees", async (req, res) => {
     limit = currentLimit;
 
     const employees = await getEmployees(page, limit);
-    console.log("employees: ", employees);
 
     // Reference: https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
     const formattedEmployees = await Promise.all(
@@ -103,7 +102,7 @@ router.get("/employees", async (req, res) => {
 router.get("/employees/all", async (req, res) => {
   try {
     const employees = await getAllEmployees();
-    console.log("employees: ", employees);
+    // console.log("employees: ", employees);
 
     const formattedEmployees = await Promise.all(
       employees.map(async (employee) => {
@@ -146,7 +145,6 @@ router.get("/employees/all", async (req, res) => {
 router.get("/cafes", async (req, res) => {
   try {
     let { page, limit } = req.query;
-    console.log("router.stack: ", router.stack);
     const {
       page: currentPage,
       limit: currentLimit,
@@ -165,8 +163,7 @@ router.get("/cafes", async (req, res) => {
     limit = currentLimit;
 
     const cafes = await getCafes(page, limit);
-    console.log("cafes");
-    console.log(cafes);
+    // console.log("cafes: ", cafes);
 
     const total = await getCafeCount();
     return res.status(HTTP_STATUS.OK).send({
@@ -189,8 +186,7 @@ router.get("/cafes", async (req, res) => {
 router.get("/cafes/all", async (req, res) => {
   try {
     const cafes = await getAllCafes();
-    console.log("cafes");
-    console.log(cafes);
+    // console.log("cafes: ", cafes);
     return res.status(HTTP_STATUS.OK).send({
       success: true,
       message: "Successfully received all cafes",
@@ -217,8 +213,6 @@ router.post(
   async (req, res) => {
     try {
       const requestBody = req.body;
-      console.log(requestBody);
-
       await prisma.cafe.create({
         data: {
           name: requestBody["name"],
@@ -253,8 +247,6 @@ router.post(
   async (req, res) => {
     try {
       const requestBody = req.body;
-      console.log(requestBody);
-
       await prisma.employee.create({
         data: {
           name: requestBody["name"],
@@ -288,11 +280,9 @@ router.post(
 router.get("/employee/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
-    console.log(req.body);
+    // console.log(id);
     const requestBody = req.body;
     const employeeDetails = await getEmployeeById(id);
-
     return res.status(HTTP_STATUS.OK).send({
       success: true,
       message: "Successfully retrieved employee details.",
@@ -314,7 +304,6 @@ router.get("/employee/:id", async (req, res) => {
 router.get("/cafe/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.body);
     const requestBody = req.body;
     const cafeDetails = await getCafeById(id);
     const cafeEmployees = await getEmployeesByCafeId(id);
@@ -343,10 +332,7 @@ router.put(
   async (req, res) => {
     try {
       const { id } = req.params;
-      console.log(req.body);
       const requestBody = req.body;
-      console.log(requestBody["name"]);
-
       await prisma.employee.update({
         where: {
           id,
@@ -385,10 +371,7 @@ router.put(
   async (req, res) => {
     try {
       const { id } = req.params;
-      console.log(req.body);
       const requestBody = req.body;
-      console.log(requestBody["name"]);
-
       await prisma.cafe.update({
         where: {
           id,
@@ -423,10 +406,8 @@ router.put(
 router.delete("/cafe/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
+    // console.log(id);
     const requestBody = req.body;
-    console.log(requestBody);
-
     const employees = await prisma.employee.findMany({
       where: {
         cafe_id: id,
@@ -464,10 +445,8 @@ router.delete("/cafe/:id", async (req, res) => {
 router.delete("/employee/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
+    // console.log(id);
     const requestBody = req.body;
-    console.log(requestBody);
-
     await prisma.employee.delete({
       where: {
         id: id,

@@ -19,21 +19,15 @@ const CafeDetails = (props) => {
   });
 
   const onFinish = () => {
-    console.log("Success:");
     const employeeDetails = form.getFieldsValue(true);
-    console.log("employeeDetails:", employeeDetails);
     form
       .validateFields((error, values) => {
-        console.log("validateFields");
-        console.log("error:", error);
-        console.log("values:", values);
         if (error) {
           console.error("error while validating");
           return;
         }
       })
       .then((values) => {
-        console.log("valid values:", values);
         // TODO: fetch data from server
         fetch(`${import.meta.env.VITE_SERVER_URL}/cafe/${id}`, {
           method: "PUT",
@@ -50,16 +44,15 @@ const CafeDetails = (props) => {
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
           });
       })
       .catch((errorInfo) => {
-        console.log("errorInfo:", errorInfo);
+        console.error("errorInfo:", errorInfo);
       });
   };
 
   const onDelete = () => {
-    console.log("onDelete");
     try {
       fetch(`${import.meta.env.VITE_SERVER_URL}/cafe/${id}`, {
         method: "DELETE",
@@ -71,7 +64,7 @@ const CafeDetails = (props) => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     } catch (error) {
       console.error("Unable to delete cafe.");
@@ -80,8 +73,6 @@ const CafeDetails = (props) => {
   };
 
   const onFinishFailed = (cafeDetails) => {
-    console.log("Failed:", cafeDetails);
-    console.log("form.getFieldsValue():", form.getFieldsValue(true));
     form.setFieldsValue({
       name: cafeDetails.name,
       description: cafeDetails.description,
@@ -92,7 +83,6 @@ const CafeDetails = (props) => {
   };
 
   useEffect(() => {
-    console.log(`/cafe/${id}`);
     // Get employee details
     fetch(`${import.meta.env.VITE_SERVER_URL}/cafe/${id}`)
       .then((res) => res.json())
@@ -100,12 +90,11 @@ const CafeDetails = (props) => {
         setCafeDetails(json.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
   useEffect(() => {
-    console.log(cafeDetails);
     form.setFieldsValue({
       name: cafeDetails.name,
       description: cafeDetails.description,
@@ -152,12 +141,12 @@ const CafeDetails = (props) => {
             }}
             autoComplete="off"
             layout="vertical"
-            onValuesChange={(changedValues, allValues) => {
-              console.log("onValuesChange");
-              console.log(changedValues);
-              console.log(allValues);
-              console.log(cafeDetails);
-            }}
+            // onValuesChange={(changedValues, allValues) => {
+            //   console.log("onValuesChange");
+            //   console.log(changedValues);
+            //   console.log(allValues);
+            //   console.log(cafeDetails);
+            // }}
           >
             <Form.Item
               label="Cafe Name"
@@ -213,10 +202,7 @@ const CafeDetails = (props) => {
             color="green"
             htmlType="submit"
             onClick={(event) => {
-              console.log("Submit");
               setDisabled(false);
-              console.log(form.fields);
-              console.log(event.target.textContent);
               // TODO: Tricky logic to update the submit. Relook this logic.
               if (event.target.textContent === "Update") {
                 onFinish();
@@ -235,12 +221,11 @@ const CafeDetails = (props) => {
           <Popconfirm
             title="Are you sure delete this cafe ?"
             onConfirm={() => {
-              console.log("onConfirm");
               onDelete();
             }}
-            onCancel={() => {
-              console.log("onCancel");
-            }}
+            // onCancel={() => {
+            //   console.log("onCancel");
+            // }}
             okText="Yes"
             cancelText="No"
           >
@@ -257,7 +242,6 @@ const CafeDetails = (props) => {
           <Button
             color="grey"
             onClick={() => {
-              console.log("Cancel");
               setDisabled(true);
               onFinishFailed(cafeDetails);
             }}
