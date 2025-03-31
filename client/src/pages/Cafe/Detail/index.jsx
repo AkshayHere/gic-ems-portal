@@ -141,12 +141,6 @@ const CafeDetails = (props) => {
             }}
             autoComplete="off"
             layout="vertical"
-            // onValuesChange={(changedValues, allValues) => {
-            //   console.log("onValuesChange");
-            //   console.log(changedValues);
-            //   console.log(allValues);
-            //   console.log(cafeDetails);
-            // }}
           >
             <Form.Item
               label="Cafe Name"
@@ -223,9 +217,6 @@ const CafeDetails = (props) => {
             onConfirm={() => {
               onDelete();
             }}
-            // onCancel={() => {
-            //   console.log("onCancel");
-            // }}
             okText="Yes"
             cancelText="No"
           >

@@ -56,7 +56,7 @@ const CreateEmployee = (props) => {
 
   useEffect(() => {
     // Populate cafe details
-    fetch(`${import.meta.env.VITE_SERVER_URL}/cafes/all`)
+    fetch(`${import.meta.env.VITE_SERVER_URL}/cafes`)
       .then((res) => res.json())
       .then((json) => {
         const cafes = json.data.cafes;
@@ -119,12 +119,6 @@ const CreateEmployee = (props) => {
             }}
             autoComplete="off"
             layout="vertical"
-            // onValuesChange={(changedValues, allValues) => {
-            //   console.log("onValuesChange");
-            //   console.log(changedValues);
-            //   console.log(allValues);
-            //   console.log(employeeDetails);
-            // }}
           >
             <Form.Item
               label="Employee Name"
@@ -195,9 +189,6 @@ const CreateEmployee = (props) => {
               <Select
                 defaultValue={form.cafe_id}
                 block
-                // onChange={() => {
-                //   console.log("onChange");
-                // }}
                 options={cafeDetails}
               />
             </Form.Item>

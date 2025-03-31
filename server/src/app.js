@@ -37,74 +37,11 @@ app.use(express.json());
 
 router.get("/employees", async (req, res) => {
   try {
-    let { page, limit } = req.query;
-    const {
-      page: currentPage,
-      limit: currentLimit,
-      success,
-      message = "",
-      data = null,
-    } = verifyPageAndLimit(page, limit);
-    if (!success) {
-      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).send({
-        success: false,
-        message,
-        data,
-      });
-    }
-    page = currentPage;
-    limit = currentLimit;
-
-    const employees = await getEmployees(page, limit);
-
-    // Reference: https://stackoverflow.com/questions/40140149/use-async-await-with-array-map
-    const formattedEmployees = await Promise.all(
-      employees.map(async (employee) => {
-        const cafeDetails = await prisma.cafe.findFirst({
-          where: {
-            id: employee.cafe_id,
-          },
-        });
-        return {
-          id: employee.id,
-          name: employee.name,
-          email_address: employee.email_address,
-          gender: employee.gender,
-          phone_number: employee.phone_number,
-          created_at: employee.created_at,
-          cafe_id: employee.cafe_id,
-          cafe_name: cafeDetails.name,
-          days_worked: calculateDaysWorked(employee.created_at),
-        };
-      })
-    );
-
-    defineConsoleLogs(formattedEmployees);
-
-    const total = await getEmployeeCount();
-    return res.status(HTTP_STATUS.OK).send({
-      success: true,
-      message: "Successfully received employees details.",
-      data: {
-        employees: formattedEmployees,
-        total: total,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-});
-
-router.get("/employees/all", async (req, res) => {
-  try {
+    // TODO: Validate the Cafe Id format
+    let { cafe } = req.query;
     const employees = await getAllEmployees();
-    // console.log("employees: ", employees);
-
-    const formattedEmployees = await Promise.all(
+    
+    let formattedEmployees = await Promise.all(
       employees.map(async (employee) => {
         const cafeDetails = await prisma.cafe.findFirst({
           where: {
@@ -126,6 +63,16 @@ router.get("/employees/all", async (req, res) => {
     );
 
     defineConsoleLogs(formattedEmployees);
+    defineConsoleLogs(formattedEmployees.length);
+    // Filter out the list if there is a matching cafe id
+    if (cafe) {
+      formattedEmployees = formattedEmployees.filter(
+        (employee) => employee.cafe_id === cafe
+      );
+    }
+    defineConsoleLogs(formattedEmployees);
+    defineConsoleLogs(formattedEmployees.length);
+
     return res.status(HTTP_STATUS.OK).send({
       success: true,
       message: "Successfully received all employees",
@@ -144,49 +91,16 @@ router.get("/employees/all", async (req, res) => {
 
 router.get("/cafes", async (req, res) => {
   try {
-    let { page, limit } = req.query;
-    const {
-      page: currentPage,
-      limit: currentLimit,
-      success,
-      message = "",
-      data = null,
-    } = verifyPageAndLimit(page, limit);
-    if (!success) {
-      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).send({
-        success: false,
-        message,
-        data,
-      });
-    }
-    page = currentPage;
-    limit = currentLimit;
-
-    const cafes = await getCafes(page, limit);
-    // console.log("cafes: ", cafes);
-
-    const total = await getCafeCount();
-    return res.status(HTTP_STATUS.OK).send({
-      success: true,
-      message: "Successfully received all cafes",
-      data: {
-        cafes,
-        total,
+    // TODO: Validate text format
+    let { location } = req.query;
+    const cafes = await prisma.cafe.findMany({
+      where: {
+        location: {
+          contains: location,
+        },
       },
     });
-  } catch (error) {
-    console.error(error);
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-});
 
-router.get("/cafes/all", async (req, res) => {
-  try {
-    const cafes = await getAllCafes();
-    // console.log("cafes: ", cafes);
     return res.status(HTTP_STATUS.OK).send({
       success: true,
       message: "Successfully received all cafes",

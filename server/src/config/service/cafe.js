@@ -16,7 +16,7 @@ const getCafes = async (page, limit) => {
   });
 };
 
-const getAllCafes = async (page, limit) => {
+const getAllCafes = async () => {
   return new Promise((resolve, reject) => {
     prisma.cafe
       .findMany()

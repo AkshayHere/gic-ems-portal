@@ -15,7 +15,7 @@ const ListEmployees = () => {
   });
 
   const getEmployees = () => {
-    fetch(`${import.meta.env.VITE_SERVER_URL}/employees/all`)
+    fetch(`${import.meta.env.VITE_SERVER_URL}/employees`)
       .then((res) => res.json())
       .then((json) => {
         setEmployees(json.data.employees);

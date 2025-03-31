@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Space, Table, Pagination } from "antd";
+import { Table } from "antd";
 
 const CustomTable = (props) => {
   const { data, page, total, columns, limit } = props;
-
+  
   return (
     <React.Fragment>
       <Table

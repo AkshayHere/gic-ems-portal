@@ -15,7 +15,7 @@ const ListCafes = () => {
   });
 
   const getCafes = () => {
-    fetch(`${import.meta.env.VITE_SERVER_URL}/cafes/all`)
+    fetch(`${import.meta.env.VITE_SERVER_URL}/cafes`)
       .then((res) => res.json())
       .then((json) => {
         setCafes(json.data.cafes);

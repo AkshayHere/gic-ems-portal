@@ -44,7 +44,6 @@ function createCafeList() {
 
 async function main() {
   const cafes = createCafeList();
-
   await prisma.cafe.createMany({
     data: cafes,
   });
@@ -56,7 +55,6 @@ async function main() {
 
 async function init() {
   const employees = await prisma.employee.count();
-
   if (employees === 0) {
     main()
       .then(async () => {
