@@ -1,0 +1,267 @@
+type: collection.insomnia.rest/5.0
+name: GIC
+meta:
+  id: wrk_337688e5a38d4cf99a702c94e56b392e
+  created: 1742620729436
+  modified: 1742620729436
+collection:
+  - url: http://127.0.0.1:7999/cafe/04f901c7-6a44-4c0e-ac4c-36712da5b187
+    name: Get Cafe Detaiils
+    meta:
+      id: req_96b31b25db7f44a58f051ad1a02cfb21
+      created: 1742620741159
+      modified: 1743272483271
+      isPrivate: false
+      sortKey: -1742620741159
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/employees
+    name: All Employees
+    meta:
+      id: req_b13d98493f184dbca0c84aa03fb2614d
+      created: 1742621600339
+      modified: 1743417557871
+      isPrivate: false
+      sortKey: -1742621600339
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/cafes
+    name: All Cafes
+    meta:
+      id: req_ec8679ced6d7489b8489b5069482bcfd
+      created: 1742639607667
+      modified: 1743416081837
+      isPrivate: false
+      sortKey: -1742639607667
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/cafe
+    name: Create Cafe
+    meta:
+      id: req_d2fd6b680db94ee6b390a143dc20c8ea
+      created: 1742642303048
+      modified: 1743273315612
+      isPrivate: false
+      sortKey: -1742645952764.5
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"name": "Sample Cafe Burger",
+        	"description": "Tersus talio arcesso atrox beneficium cetera delectatio somnus.",
+        	"location": "East Gregfurt",
+        	"logo": "https://picsum.photos/seed/yfj9oVlVIi/476/3161"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/cafe/0877f897-e413-4f71-b110-a9c70a9a8891
+    name: Update Cafe
+    meta:
+      id: req_5a6ef1efad0f4cd785a63587789ef97b
+      created: 1742642516576
+      modified: 1743273336297
+      isPrivate: false
+      sortKey: -1742654674967
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "This Cafe rocks",
+        	"description": "Beatus socius averto blandior alienus decipio odio.",
+        	"location": "Akeemmouth",
+        	"logo": "https://picsum.photos/seed/DJOaH9Vo/376/679"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/employee/create
+    name: Create Employee
+    meta:
+      id: req_196d0594ab5b40f3a13dd6f86b86511a
+      created: 1742649388953
+      modified: 1743425477446
+      isPrivate: false
+      sortKey: -1742649388953
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Chacko",
+        	"email_address": "sabu@hotmail.com",
+        	"gender": "MALE",
+        	"phone_number": "92442344",
+        	"start_date": "2025-04-04",
+        	"cafe_id": "c26c1b37-df89-4332-b396-06f98b0ed27f"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/employee/02746c3b-10dc-46e2-9b8f-453ef87b85d9
+    name: Update Employee
+    meta:
+      id: req_58e86721121d44e98cf8bda90c751f6f
+      created: 1742659960981
+      modified: 1743242520952
+      isPrivate: false
+      sortKey: -1742659960981
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Colonel Ruffs",
+        	"email_address": "Clara32@gmail.com",
+        	"gender": "FEMALE",
+        	"phone_number": "+19875799100",
+        	"cafe_id": "362317fc-abc1-41b1-b7a3-d080d3d5b7d5"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/employee/173c1258-e1de-48ae-8972-9c3e43535088
+    name: Delete Employee
+    meta:
+      id: req_0072d25e7c8f462a9872f4831653bb45
+      created: 1742662257639
+      modified: 1742662553830
+      isPrivate: false
+      sortKey: -1742662257639
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/cafe/0af0fc08-4316-4bed-b39a-8cf6f60c4573
+    name: Delete Cafe
+    meta:
+      id: req_e3430c1d0f744b0098ae82f62fb31fc9
+      created: 1742662350038
+      modified: 1742663002137
+      isPrivate: false
+      sortKey: -1742661109310
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:7999/employee/02746c3b-10dc-46e2-9b8f-453ef87b85d9
+    name: Get Employee Details
+    meta:
+      id: req_2d49eaf89bfc444b990764f2e2a4613b
+      created: 1742825519258
+      modified: 1743223392405
+      isPrivate: false
+      sortKey: -1742621170749
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_af58af35a010cfc82b6e95d6cd3e1c5ce836b095
+    created: 1742620729440
+    modified: 1742620729440
+environments:
+  name: Base Environment
+  meta:
+    id: env_af58af35a010cfc82b6e95d6cd3e1c5ce836b095
+    created: 1742620729438
+    modified: 1742620729438
+    isPrivate: false

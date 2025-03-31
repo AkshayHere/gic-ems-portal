@@ -6,9 +6,9 @@ To kickstart the project off, run the below command
 .\start-container.sh
 ```
 
-This will start the project instance in your local machine.
+This will start the project instance in your local machine. Wait for a few minutes for the database to be ready.
 
-Navigate to the [http:localhost:7999](http:localhost:7999) to start browsing the application.
+Navigate to the [http://localhost:4172](http://localhost:4172) to start using the application.
 
 You may use the side menu to navigate to various pages.
 
